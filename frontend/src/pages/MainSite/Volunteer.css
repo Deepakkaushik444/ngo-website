@@ -1,0 +1,463 @@
+/* Volunteer.css - Perfect match with Login page design */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.volunteer-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 10% 20%, rgba(15, 25, 45, 0.95), rgba(5, 10, 25, 0.98)),
+              url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjMjIyIiBkPSJNMjAgMjBhMTAgMTAgMCAwIDEgMjAgMCAxMCAxMCAwIDAgMS0yMCAweiIvPjwvc3ZnPg==');
+  background-size: 30px 30px;
+  animation: subtleMove 20s linear infinite;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  padding: 2rem;
+}
+
+@keyframes subtleMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 100% 100%; }
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.volunteer-page h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.3px;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* ---------- GLASS CARD (same as login-card) ---------- */
+.volunteer-form-container {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 2rem;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  padding: 2.5rem 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.volunteer-form-container:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Success message */
+.success-message {
+  background: rgba(34, 197, 94, 0.2);
+  backdrop-filter: blur(4px);
+  color: #86efac;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  margin-bottom: 1.8rem;
+  text-align: center;
+  border-left: 3px solid #22c55e;
+  animation: fadeSlide 0.4s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- INPUT GROUPS WITH ICONS (like login) ---------- */
+.form-group {
+  position: relative;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  transition: all 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-group:focus-within {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #FFD700;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+}
+
+.input-icon {
+  padding: 0 0.8rem;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.form-group input,
+.form-group textarea {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.9rem 0;
+  font-size: 1rem;
+  outline: none;
+  color: #ffffff;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  padding: 0.9rem 0.9rem 0.9rem 0;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- SUBMIT BUTTON (gold gradient) ---------- */
+.submit-volunteer-btn {
+  width: 100%;
+  background: linear-gradient(105deg, #FFD700 0%, #FF8C00 100%);
+  color: #1f2937;
+  border: none;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  letter-spacing: 0.3px;
+}
+
+.submit-volunteer-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px -5px rgba(255, 140, 0, 0.5);
+  background: linear-gradient(105deg, #FFE033 0%, #FF9D33 100%);
+}
+
+.submit-volunteer-btn:active {
+  transform: scale(0.98);
+}
+
+.submit-volunteer-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ---------- VOLUNTEER LIST SECTION ---------- */
+.volunteer-list-section {
+  margin-top: 3rem;
+}
+
+.volunteer-list-section h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.volunteer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Volunteer card - clickable, glass, hover effect */
+.volunteer-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 1.5rem;
+  padding: 1.2rem;
+  display: flex;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.volunteer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 215, 0, 0.5);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.volunteer-avatar {
+  width: 55px;
+  height: 55px;
+  background: linear-gradient(135deg, #FFD700, #FF8C00);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1f2937;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.volunteer-card:hover .volunteer-avatar {
+  transform: scale(1.05);
+}
+
+.volunteer-info {
+  flex: 1;
+}
+
+.volunteer-info h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.volunteer-email,
+.volunteer-phone {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+  word-break: break-all;
+}
+
+.volunteer-message {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.volunteer-date {
+  color: rgba(255, 215, 0, 0.8);
+  font-size: 0.7rem;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.no-volunteers {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 2rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 1rem;
+}
+
+/* ---------- MODAL (same style as login modals) ---------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: rgba(20, 30, 45, 0.95);
+  backdrop-filter: blur(16px);
+  border-radius: 1.5rem;
+  width: 90%;
+  max-width: 550px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 215, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h3 {
+  color: #FFD700;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s;
+  line-height: 1;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.close-modal:hover {
+  color: #FFD700;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 0 auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.detail-row {
+  display: flex;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.detail-label {
+  width: 120px;
+  font-weight: 600;
+  color: rgba(255, 215, 0, 0.9);
+  flex-shrink: 0;
+}
+
+.detail-value {
+  flex: 1;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-active {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid #22c55e;
+}
+
+.status-pending {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid #f59e0b;
+}
+
+.status-inactive {
+  background: rgba(107, 114, 128, 0.3);
+  color: #9ca3af;
+  border: 1px solid #6b7280;
+}
+
+/* Modal scrollbar */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #FFD700;
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #FF8C00;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 640px) {
+  .volunteer-page {
+    padding: 1rem;
+  }
+  .volunteer-form-container {
+    padding: 1.5rem;
+  }
+  .volunteer-page h1 {
+    font-size: 1.6rem;
+  }
+  .volunteer-grid {
+    grid-template-columns: 1fr;
+  }
+  .volunteer-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .volunteer-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+  }
+  .detail-row {
+    flex-direction: column;
+  }
+  .detail-label {
+    width: 100%;
+    margin-bottom: 0.25rem;
+  }
+}

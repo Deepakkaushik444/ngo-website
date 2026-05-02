@@ -1,0 +1,210 @@
+/* ManagePrograms.css - Glassmorphism + Animated Background */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.manage-programs {
+  min-height: 100vh;
+  background: radial-gradient(circle at 10% 20%, rgba(15, 25, 45, 0.95), rgba(5, 10, 25, 0.98)),
+              url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjMjIyIiBkPSJNMjAgMjBhMTAgMTAgMCAwIDEgMjAgMCAxMCAxMCAwIDAgMS0yMCAweiIvPjwvc3ZnPg==');
+  background-size: 30px 30px;
+  animation: subtleMove 20s linear infinite;
+  padding: 2rem;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+@keyframes subtleMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 100% 100%; }
+}
+
+/* Header */
+.manage-programs h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(135deg, #FFD700, #FF8C00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 2rem;
+  letter-spacing: -0.5px;
+}
+
+/* Form Card */
+.program-form {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 2rem;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.program-form:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.program-form input,
+.program-form textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #ffffff;
+  font-family: inherit;
+  transition: 0.2s;
+}
+
+.program-form input:focus,
+.program-form textarea:focus {
+  outline: none;
+  border-color: #FFD700;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+}
+
+.program-form input::placeholder,
+.program-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.program-form button {
+  background: linear-gradient(105deg, #FFD700 0%, #FF8C00 100%);
+  color: #1f2937;
+  font-weight: 700;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.program-form button:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px -5px rgba(255, 140, 0, 0.5);
+}
+
+.program-form button:active {
+  transform: scale(0.98);
+}
+
+/* Cancel button specific */
+.program-form button[type="button"] {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.program-form button[type="button"]:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.02);
+}
+
+/* Programs Grid */
+.programs-list-admin {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Program Card (glassmorphism) */
+.program-item {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 1.5rem;
+  padding: 1.2rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.program-item:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
+}
+
+.program-item h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #FFD700;
+  margin-bottom: 0.5rem;
+}
+
+.program-item p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+/* Admin actions inside card */
+.admin-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.admin-actions button {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem;
+  border-radius: 2rem;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 0.85rem;
+}
+
+.admin-actions button:first-child:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.admin-actions button:last-child:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+
+/* Loading / empty states (optional) */
+.loading-spinner {
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+  padding: 3rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .manage-programs {
+    padding: 1rem;
+  }
+  .program-form {
+    padding: 1.2rem;
+  }
+  .programs-list-admin {
+    grid-template-columns: 1fr;
+  }
+  .manage-programs h1 {
+    font-size: 1.8rem;
+  }
+}
