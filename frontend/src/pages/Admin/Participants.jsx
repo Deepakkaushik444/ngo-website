@@ -2,19 +2,27 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Participants.css";
 
-const events = [
-  { id: 1, title: "Bal Vikas Vatika" },
-  { id: 2, title: "Ramayan Quiz" },
-  { id: 3, title: "Yoga for Women" },
-  { id: 4, title: "Support for Weaker Families" },
-];
-
 export default function Participants() {
-  const [selectedEvent, setSelectedEvent] = useState("");
+  const [programs, setPrograms] = useState([]);        // dynamic program list
+  const [selectedEventId, setSelectedEventId] = useState("");
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
+  // Fetch programs from backend when component mounts
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/programs");
+        setPrograms(res.data);
+      } catch (err) {
+        showToast("Failed to load programs list", "error");
+      }
+    };
+    fetchPrograms();
+  }, []);
+
+  // Fetch participants for selected event
   const fetchParticipants = async (eventId) => {
     if (!eventId) return;
     setLoading(true);
@@ -30,9 +38,12 @@ export default function Participants() {
 
   const handleEventChange = (e) => {
     const eventId = e.target.value;
-    setSelectedEvent(eventId);
-    if (eventId) fetchParticipants(eventId);
-    else setParticipants([]);
+    setSelectedEventId(eventId);
+    if (eventId) {
+      fetchParticipants(eventId);
+    } else {
+      setParticipants([]);
+    }
   };
 
   const handleDelete = async (regId, groupLeader) => {
@@ -40,7 +51,7 @@ export default function Participants() {
       try {
         await axios.delete(`http://localhost:5000/api/registrations/${regId}`);
         showToast("Group deleted", "success");
-        fetchParticipants(selectedEvent);
+        fetchParticipants(selectedEventId);
       } catch (err) {
         showToast("Delete failed", "error");
       }
@@ -57,11 +68,11 @@ export default function Participants() {
       <h1>📋 Event Participants</h1>
       <div className="filter-section">
         <label>Select Event:</label>
-        <select value={selectedEvent} onChange={handleEventChange}>
+        <select value={selectedEventId} onChange={handleEventChange}>
           <option value="">-- Choose an event --</option>
-          {events.map((ev) => (
-            <option key={ev.id} value={ev.id}>
-              {ev.title}
+          {programs.map((prog) => (
+            <option key={prog._id} value={prog._id}>
+              {prog.title}
             </option>
           ))}
         </select>
@@ -69,7 +80,7 @@ export default function Participants() {
 
       {loading && <div className="loading">Loading participants...</div>}
 
-      {!loading && selectedEvent && participants.length === 0 && (
+      {!loading && selectedEventId && participants.length === 0 && (
         <div className="empty-state">No registrations yet for this event.</div>
       )}
 
@@ -89,7 +100,7 @@ export default function Participants() {
               </tr>
             </thead>
             <tbody>
-              {participants.map((group) => (
+              {participants.map((group) =>
                 group.members.map((member, idx) => (
                   <tr key={`${group._id}-${idx}`}>
                     <td className="id-cell">{idx === 0 ? group.generatedId : ""}</td>
@@ -103,7 +114,7 @@ export default function Participants() {
                       {idx === 0 && (
                         <button
                           className="delete-btn"
-                          onClick={() => handleDelete(group._id, group.groupLeader)}
+                          onClick={() => handleDelete(group._id, group.members[0].name)}
                         >
                           🗑️ Delete Group
                         </button>
@@ -111,7 +122,7 @@ export default function Participants() {
                     </td>
                   </tr>
                 ))
-              ))}
+              )}
             </tbody>
           </table>
         </div>

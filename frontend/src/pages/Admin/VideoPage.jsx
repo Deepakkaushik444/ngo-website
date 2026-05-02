@@ -119,7 +119,7 @@ export default function VideoPage() {
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/posts/${editingVideo.id}`, {
+      await axios.put(`http://localhost:5000.com/api/posts/${editingVideo.id}`, {
         title: editingVideo.title,
         description: editingVideo.description,
         category: editingVideo.category
@@ -201,7 +201,7 @@ export default function VideoPage() {
             <h1>
               <span>🎬</span> Video Library
             </h1>
-            <button className="upload-btn" onClick={() => window.location.href = "/upload"}>
+            <button className="upload-btn" onClick={() => window.location.href = "upload"}>
               <span>📤</span> Upload New Video
             </button>
           </div>

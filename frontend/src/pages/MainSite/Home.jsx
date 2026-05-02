@@ -11,11 +11,11 @@ import "./Home.css";
 
 // Gallery images
 const galleryImages = [
-  { original: "/images/ngo.jpeg", title: "NGO Event" },
-  { original: "/images/meal.jpg", title: "Community Meal" },
-  { original: "/images/yoga.jpeg", title: "Yoga Program" },
+  { original: "/images/youth.png", title: "Motivation" },
+  { original: "/images/game.png", title: "Game" },
+  { original: "/images/yoga.png", title: "Yoga Program" },
   { original: "/images/ration.jpeg", title: "Ration Kit Distribution" },
-  { original: "/images/health.jpeg", title: "Women's Health Camp" },
+  { original: "/images/price.png", title: "Price Distribution" },
   { original: "/images/playschool.jpeg", title: "School Support" },
 ];
 
@@ -255,7 +255,7 @@ const handleDonateClick = () => {
             </button>
             <div className="qr-modal-body">
               <h3>Scan to Donate</h3>
-              <img src="/images/qr.jpeg" alt="Donation QR Code" className="qr-image" />
+              <img src="/images/qr1.jpg" alt="Donation QR Code" className="qr-image" />
               <p className="qr-note">Scan with any UPI app to support our cause</p>
             </div>
           </div>

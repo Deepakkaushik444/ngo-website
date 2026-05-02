@@ -8,7 +8,7 @@ const memberSchema = new mongoose.Schema({
 });
 
 const registrationSchema = new mongoose.Schema({
-  eventId: { type: Number, required: true },
+  eventId: { type:String, required: true },
   eventTitle: { type: String, required: true },
   groupSize: { type: Number, required: true, min: 1, max: 4 },
   members: [memberSchema],

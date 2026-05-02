@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
   try {
     const { eventId } = req.query;
     let filter = {};
-    if (eventId) filter.eventId = parseInt(eventId);
+    if (eventId) filter.eventId = eventId;   // ← no parseInt
     const registrations = await Registration.find(filter).sort({ registeredAt: -1 });
     res.json(registrations);
   } catch (err) {
