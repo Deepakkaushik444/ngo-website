@@ -244,4 +244,4 @@ app.get('/api/debug', async (req, res) => {
   res.json(raw);
 });
 
-app.listen(5000, () => console.log("Server running on 5000 🚀"));
+app.listen(`${PORT}`, () => console.log("Server running on 5000 🚀"));
