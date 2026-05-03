@@ -70,7 +70,7 @@ export default function RegisterForEvent() {
     setLoading(true);
     try {
       const res = await axios.post('https://ngo-website-wzab.onrender.com/api/registrations/register', {
-        eventId: event._id,
+        eventId: event.id,
         eventTitle: event.title,
         groupSize,
         members,
