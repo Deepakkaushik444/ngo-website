@@ -107,7 +107,42 @@
   background: rgba(239, 68, 68, 0.4);
   color: #fff;
 }
+/* Sidebar wrapper – allows scrolling */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #1e293b;
+  color: #cbd5e1;
+  position: sticky;
+  top: 0;
+  overflow: hidden; /* prevents double scroll */
+}
 
+.sidebar-nav-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.sidebar-nav-wrapper::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar-nav-wrapper::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+.sidebar-nav-wrapper::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 10px;
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid #334155;
+  margin-top: auto;
+}
 /* Main Content */
 .main-content-area {
   flex: 1;
