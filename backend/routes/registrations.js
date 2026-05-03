@@ -16,6 +16,11 @@ const generateUniqueId = async () => {
 // POST /api/registrations/register
 router.post('/register', async (req, res) => {
   try {
+
+    console.log('📥 Received body:', req.body);
+console.log('eventId:', req.body.eventId, 'type:', typeof req.body.eventId);
+console.log('groupSize:', req.body.groupSize, 'type:', typeof req.body.groupSize);
+console.log('members length:', req.body.members?.length);
     const { eventId, eventTitle, members } = req.body;
     const groupSize = Number(req.body.groupSize);
     if (!eventId || !groupSize || !members || members.length !== groupSize) {

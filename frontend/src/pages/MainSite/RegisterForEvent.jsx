@@ -69,6 +69,12 @@ export default function RegisterForEvent() {
 
     setLoading(true);
     try {
+      console.log('🔍 Payload to send:', {
+  eventId: event._id,
+  eventTitle: event.title,
+  groupSize,
+  members
+});
       const res = await axios.post('https://ngo-website-wzab.onrender.com/api/registrations/register', {
         eventId: event._id,
         eventTitle: event.title,
