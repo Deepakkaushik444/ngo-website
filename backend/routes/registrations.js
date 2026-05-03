@@ -16,7 +16,8 @@ const generateUniqueId = async () => {
 // POST /api/registrations/register
 router.post('/register', async (req, res) => {
   try {
-    const { eventId, eventTitle, groupSize, members } = req.body;
+    const { eventId, eventTitle, members } = req.body;
+    const groupSize = Number(req.body.groupSize);
     if (!eventId || !groupSize || !members || members.length !== groupSize) {
       return res.status(400).json({ error: 'Invalid registration data' });
     }
