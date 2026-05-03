@@ -38,12 +38,13 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// GET /api/registrations?eventId=...
+// GET /api/registrations?eventId=... or ?eventTitle=...
 router.get('/', async (req, res) => {
   try {
-    const { eventId } = req.query;
+    const { eventId, eventTitle } = req.query;
     let filter = {};
-    if (eventId) filter.eventId = eventId;   // ← no parseInt
+    if (eventId) filter.eventId = eventId;
+    if (eventTitle) filter.eventTitle = eventTitle;
     const registrations = await Registration.find(filter).sort({ registeredAt: -1 });
     res.json(registrations);
   } catch (err) {

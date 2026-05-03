@@ -24,17 +24,22 @@ export default function Participants() {
 
   // Fetch participants for selected event
   const fetchParticipants = async (eventId) => {
-    if (!eventId) return;
-    setLoading(true);
-    try {
-      const res = await axios.get(`https://ngo-website-wzab.onrender.com/api/registrations?eventId=${eventId}`);
-      setParticipants(res.data);
-    } catch (err) {
-      showToast("Failed to load participants", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!eventId) return;
+  setLoading(true);
+  try {
+    // Find the selected program to get its title
+    const selectedProgram = programs.find(p => p._id === eventId);
+    if (!selectedProgram) throw new Error('Program not found');
+    
+    // Fetch using eventTitle (works for old records)
+    const res = await axios.get(`https://ngo-website-wzab.onrender.com/api/registrations?eventTitle=${selectedProgram.title}`);
+    setParticipants(res.data);
+  } catch (err) {
+    showToast("Failed to load participants", "error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleEventChange = (e) => {
     const eventId = e.target.value;
