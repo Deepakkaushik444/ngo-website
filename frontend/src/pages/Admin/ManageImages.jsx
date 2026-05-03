@@ -11,7 +11,7 @@ export default function ManageImages() {
   const [toast, setToast] = useState({ show: false, message: '', type: '' });
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
-  const API_BASE = 'http://localhost:5000/api';
+  const API_BASE = 'https://ngo-website-wzab.onrender.com/api';
 
   useEffect(() => {
     fetchImages();

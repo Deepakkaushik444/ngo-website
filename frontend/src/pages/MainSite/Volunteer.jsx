@@ -12,7 +12,7 @@ export default function Volunteer() {
   // Fetch volunteers
   const fetchVolunteers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/volunteer/volunteers");
+      const res = await fetch("https://ngo-website-wzab.onrender.com/api/volunteer/volunteers");
       const data = await res.json();
       if (data.success) {
         setVolunteers(data.volunteers);
@@ -32,7 +32,7 @@ export default function Volunteer() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/volunteer", {
+      const res = await fetch("https://ngo-website-wzab.onrender.com/api/volunteer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

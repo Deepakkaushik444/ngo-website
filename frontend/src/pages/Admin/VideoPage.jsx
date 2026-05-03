@@ -34,7 +34,7 @@ export default function VideoPage() {
   const fetchVideos = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/posts");
+      const res = await axios.get("https://ngo-website-wzab.onrender.com/api/posts");
       
       const formattedVideos = res.data.map(video => ({
         id: video._id,
@@ -102,7 +102,7 @@ export default function VideoPage() {
   setVideos(prev => prev.filter(v => v.id !== videoId));
 
   try {
-    await axios.delete(`http://localhost:5000/api/posts/${videoId}`);
+    await axios.delete(`https://ngo-website-wzab.onrender.com/api/posts/${videoId}`);
     showToast("Video deleted successfully ✅", "success");
   } catch (error) {
     console.error("Delete error:", error);
@@ -119,7 +119,7 @@ export default function VideoPage() {
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put(`http://localhost:5000.com/api/posts/${editingVideo.id}`, {
+      await axios.put(`https://ngo-website-wzab.onrender.com.com/api/posts/${editingVideo.id}`, {
         title: editingVideo.title,
         description: editingVideo.description,
         category: editingVideo.category
@@ -142,7 +142,7 @@ export default function VideoPage() {
     setShowModal(true);
     
     try {
-      await axios.put(`http://localhost:5000/api/posts/${video.id}/view`);
+      await axios.put(`https://ngo-website-wzab.onrender.com/api/posts/${video.id}/view`);
       const updatedVideos = videos.map(v => 
         v.id === video.id ? { ...v, views: (v.views || 0) + 1 } : v
       );

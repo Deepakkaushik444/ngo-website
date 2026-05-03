@@ -96,7 +96,7 @@ export default function UploadImage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/images/upload",
+        "https://ngo-website-wzab.onrender.com/api/images/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

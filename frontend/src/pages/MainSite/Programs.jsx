@@ -14,7 +14,7 @@ export default function Programs() {
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/programs");
+        const response = await axios.get("https://ngo-website-wzab.onrender.com/api/programs");
         setPrograms(response.data);
         setError(null);
       } catch (err) {

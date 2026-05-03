@@ -15,7 +15,7 @@ export default function ManagePrograms() {
   }, []);
 
   const fetchPrograms = async () => {
-    const res = await axios.get('http://localhost:5000/api/programs');
+    const res = await axios.get('https://ngo-website-wzab.onrender.com/api/programs');
     setPrograms(res.data);
   };
 
@@ -24,9 +24,9 @@ export default function ManagePrograms() {
     setLoading(true);
     try {
       if (editing) {
-        await axios.put(`http://localhost:5000/api/programs/${editing._id}`, form);
+        await axios.put(`https://ngo-website-wzab.onrender.com/api/programs/${editing._id}`, form);
       } else {
-        await axios.post('http://localhost:5000/api/programs', form);
+        await axios.post('https://ngo-website-wzab.onrender.com/api/programs', form);
       }
       await fetchPrograms();
       setEditing(null);
@@ -45,7 +45,7 @@ export default function ManagePrograms() {
 
   const handleDelete = async (id) => {
     if (window.confirm('Delete this program? All registrations referencing it will remain.')) {
-      await axios.delete(`http://localhost:5000/api/programs/${id}`);
+      await axios.delete(`https://ngo-website-wzab.onrender.com/api/programs/${id}`);
       await fetchPrograms();
     }
   };

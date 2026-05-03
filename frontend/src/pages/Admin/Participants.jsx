@@ -13,7 +13,7 @@ export default function Participants() {
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/programs");
+        const res = await axios.get("https://ngo-website-wzab.onrender.com/api/programs");
         setPrograms(res.data);
       } catch (err) {
         showToast("Failed to load programs list", "error");
@@ -27,7 +27,7 @@ export default function Participants() {
     if (!eventId) return;
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/registrations?eventId=${eventId}`);
+      const res = await axios.get(`https://ngo-website-wzab.onrender.com/api/registrations?eventId=${eventId}`);
       setParticipants(res.data);
     } catch (err) {
       showToast("Failed to load participants", "error");
@@ -49,7 +49,7 @@ export default function Participants() {
   const handleDelete = async (regId, groupLeader) => {
     if (window.confirm(`Delete entire group "${groupLeader}"? All members will be removed.`)) {
       try {
-        await axios.delete(`http://localhost:5000/api/registrations/${regId}`);
+        await axios.delete(`https://ngo-website-wzab.onrender.com/api/registrations/${regId}`);
         showToast("Group deleted", "success");
         fetchParticipants(selectedEventId);
       } catch (err) {

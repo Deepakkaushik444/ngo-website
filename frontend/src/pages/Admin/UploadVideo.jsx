@@ -107,7 +107,7 @@ export default function UploadVideo() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/posts/upload",
+        "https://ngo-website-wzab.onrender.com/api/posts/upload",
         formData,
         {
           headers: {

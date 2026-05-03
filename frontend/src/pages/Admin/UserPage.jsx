@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import './UserPage.css';
 
-const API_URL = 'http://localhost:5000.com/api';
+const API_URL = 'https://ngo-website-wzab.onrender.com.com/api';
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);

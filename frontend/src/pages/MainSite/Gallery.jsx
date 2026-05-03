@@ -30,7 +30,7 @@ export default function Gallery() {
         setLoading(true);
 
         // 1. Fetch videos from /api/posts
-        const videoRes = await fetch("http://localhost:5000/api/posts");
+        const videoRes = await fetch("https://ngo-website-wzab.onrender.com/api/posts");
         if (!videoRes.ok) throw new Error("Failed to fetch videos");
         const videosData = await videoRes.json();
 
@@ -45,7 +45,7 @@ export default function Gallery() {
         // 2. Fetch images from /api/images
         let galleryImages = [];
         try {
-          const imageRes = await fetch("http://localhost:5000/api/images");
+          const imageRes = await fetch("https://ngo-website-wzab.onrender.com/api/images");
           if (imageRes.ok) {
             const imagesData = await imageRes.json();
             galleryImages = imagesData.map((img) => ({
