@@ -17,10 +17,14 @@ export default function RegisterForEvent() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!event) {
-      navigate('/programs');
-    }
-  }, [event, navigate]);
+  if (!event) {
+    navigate('/programs');
+  } else {
+    console.log('Event received:', event);
+    console.log('Event ID (_id):', event._id);
+    console.log('Event ID (id):', event.id);
+  }
+}, [event, navigate]);
 
   const handleGroupSizeChange = (size) => {
     const newSize = parseInt(size);
@@ -43,53 +47,54 @@ export default function RegisterForEvent() {
   };
 
   const handleGenerateId = async (e) => {
-    e.preventDefault();
-    setError('');
+  e.preventDefault();
+  setError('');
 
-    // Validate all fields
-    for (let i = 0; i < members.length; i++) {
-      const m = members[i];
-      if (!m.name.trim()) {
-        setError(`Member ${i + 1}: Name is required`);
-        return;
-      }
-      if (!m.email.trim() || !/\S+@\S+\.\S+/.test(m.email)) {
-        setError(`Member ${i + 1}: Valid email is required`);
-        return;
-      }
-      if (!m.phone.trim() || !/^\d{10}$/.test(m.phone)) {
-        setError(`Member ${i + 1}: Phone must be 10 digits`);
-        return;
-      }
-      if (!m.schoolName.trim()) {
-        setError(`Member ${i + 1}: School name is required`);
-        return;
-      }
+  // Validate all fields
+  for (let i = 0; i < members.length; i++) {
+    const m = members[i];
+    if (!m.name.trim()) {
+      setError(`Member ${i + 1}: Name is required`);
+      return;
     }
+    if (!m.email.trim() || !/\S+@\S+\.\S+/.test(m.email)) {
+      setError(`Member ${i + 1}: Valid email is required`);
+      return;
+    }
+    if (!m.phone.trim() || !/^\d{10}$/.test(m.phone)) {
+      setError(`Member ${i + 1}: Phone must be 10 digits`);
+      return;
+    }
+    if (!m.schoolName.trim()) {
+      setError(`Member ${i + 1}: School name is required`);
+      return;
+    }
+  }
 
-    setLoading(true);
-    try {
-      console.log('🔍 Payload to send:', {
-  eventId: event._id,
-  eventTitle: event.title,
-  groupSize,
-  members
-});
-      const res = await axios.post('https://ngo-website-wzab.onrender.com/api/registrations/register', {
-        eventId: event._id,
-        eventTitle: event.title,
-        groupSize,
-        members,
-      });
-      if (res.data.success) {
-        setSuccessId(res.data.generatedId);
-      }
-    } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed. Please try again.');
-    } finally {
-      setLoading(false);
+  // Check that event.id exists
+  if (!event.id) {
+    setError('Event ID missing. Please go back to Programs and try again.');
+    setLoading(false);
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const res = await axios.post('https://ngo-website-wzab.onrender.com/api/registrations/register', {
+      eventId: event.id,        // ✅ FIXED: use event.id
+      eventTitle: event.title,
+      groupSize: Number(groupSize),
+      members,
+    });
+    if (res.data.success) {
+      setSuccessId(res.data.generatedId);
     }
-  };
+  } catch (err) {
+    setError(err.response?.data?.error || 'Registration failed. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (!event) return null;
 
