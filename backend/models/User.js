@@ -20,10 +20,24 @@ const userSchema = new mongoose.Schema({
     }
   },
   role: {
-    type: String,
-    enum: ['admin', 'editor', 'volunteer'],
-    default: 'volunteer'
-  },
+  type: String,
+  enum: [
+    'admin',
+    'editor',
+    'volunteer',
+    'director',
+    'secretary',
+    'treasurer',
+    'programManager',
+    'OperationsManager',
+    'technicalCoordinator',
+    'outreachCoordinator',
+    'monitoringEvaluationOfficer',
+    'accountsAndFinanceOfficer',
+    'communicationsAndFundraisingCoordinator'
+  ],
+  default: 'volunteer'
+},
   status: {
     type: String,
     enum: ['active', 'inactive', 'pending'],

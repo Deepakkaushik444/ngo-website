@@ -5,6 +5,23 @@ import './UserPage.css';
 
 const API_URL = 'https://ngo-website-wzab.onrender.com/api';
 
+// Define all available roles with their display labels
+const ROLE_OPTIONS = [
+  { value: 'admin', label: 'Administrator' },
+  { value: 'editor', label: 'Content Editor' },
+  { value: 'volunteer', label: 'Volunteer' },
+  { value: 'director', label: 'Founder & Director' },
+  { value: 'secretary', label: 'Secretary' },
+  { value: 'treasurer', label: 'Treasurer' },
+  { value: 'programManager', label: 'Program Manager' },
+  { value: 'OperationsManager', label: 'Field Operations Manager' },
+  { value: 'technicalCoordinator', label: 'Technical Coordinator' },
+  { value: 'outreachCoordinator', label: 'Community Outreach Coordinator' },
+  { value: 'monitoringEvaluationOfficer', label: 'Monitoring & Evaluation Officer' },
+  { value: 'accountsAndFinanceOfficer', label: 'Accounts & Finance Officer' },
+  { value: 'communicationsAndFundraisingCoordinator', label: 'Communications & Fundraising Coordinator' }
+];
+
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -260,12 +277,8 @@ export default function UsersPage() {
   };
 
   const getRoleLabel = (role) => {
-    switch(role) {
-      case 'admin': return 'Administrator';
-      case 'editor': return 'Content Editor';
-      case 'volunteer': return 'Volunteer';
-      default: return role;
-    }
+    const found = ROLE_OPTIONS.find(opt => opt.value === role);
+    return found ? found.label : role;
   };
 
   // Pagination
@@ -343,9 +356,9 @@ export default function UsersPage() {
               onChange={(e) => setFilters({ ...filters, role: e.target.value })}
             >
               <option value="all">All Roles</option>
-              <option value="admin">Administrator</option>
-              <option value="editor">Editor</option>
-              <option value="volunteer">Volunteer</option>
+              {ROLE_OPTIONS.map(role => (
+                <option key={role.value} value={role.value}>{role.label}</option>
+              ))}
             </select>
             
             <select 
@@ -443,8 +456,8 @@ export default function UsersPage() {
                             🗑️ Delete
                           </button>
                         </div>
-                       </td>
-                     </tr>
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
@@ -530,9 +543,9 @@ export default function UsersPage() {
                     value={formData.role}
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                   >
-                    <option value="admin">Administrator</option>
-                    <option value="editor">Editor</option>
-                    <option value="volunteer">Volunteer</option>
+                    {ROLE_OPTIONS.map(role => (
+                      <option key={role.value} value={role.value}>{role.label}</option>
+                    ))}
                   </select>
                 </div>
                 
@@ -624,9 +637,9 @@ export default function UsersPage() {
                     value={selectedUser.role}
                     onChange={(e) => setSelectedUser({ ...selectedUser, role: e.target.value })}
                   >
-                    <option value="admin">Administrator</option>
-                    <option value="editor">Editor</option>
-                    <option value="volunteer">Volunteer</option>
+                    {ROLE_OPTIONS.map(role => (
+                      <option key={role.value} value={role.value}>{role.label}</option>
+                    ))}
                   </select>
                 </div>
                 
