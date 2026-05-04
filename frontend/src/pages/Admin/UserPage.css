@@ -159,6 +159,30 @@
 }
 
 /* Users Table */
+/* Make the table container scrollable vertically */
+.users-table-container {
+  max-height: 500px;          /* Adjust this value as needed */
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Keep the table header fixed while scrolling */
+.users-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f9fafb;  /* Match your header background */
+  z-index: 10;
+}
+
+/* Optional: improve table layout */
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
 .users-table-container {
   background: white;
   border-radius: 20px;
