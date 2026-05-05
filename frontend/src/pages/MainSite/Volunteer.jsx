@@ -1,24 +1,53 @@
+// Volunteer.js
 import { useState, useEffect } from "react";
 import "./Volunteer.css";
 
 export default function Volunteer() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    region: "",
+    reason: "",
+    otherReason: "",
+    additionalComments: "",
+  });
   const [submitted, setSubmitted] = useState(false);
   const [volunteers, setVolunteers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [selectedVolunteer, setSelectedVolunteer] = useState(null);
 
+  // Predefined reasons
+  const reasonOptions = [
+    "I want to give back to society",
+    "I am passionate about helping others",
+    "I want to make a positive impact in the community",
+    "I want to gain new skills and experience",
+    "I want to build my resume / career profile",
+    "I want to develop leadership and teamwork skills",
+    "I was inspired by your NGO’s work",
+    "I want to use my free time in a meaningful way",
+    "I care about social causes like education, environment, or health",
+    "Other",
+  ];
+
   // Fetch volunteers
   const fetchVolunteers = async () => {
+    setRefreshing(true);
     try {
       const res = await fetch("https://ngo-website-wzab.onrender.com/api/volunteer/volunteers");
       const data = await res.json();
       if (data.success) {
         setVolunteers(data.volunteers);
+      } else {
+        console.error("Failed to fetch volunteers:", data);
       }
     } catch (error) {
       console.error("Error fetching volunteers:", error);
+    } finally {
+      setRefreshing(false);
     }
   };
 
@@ -26,23 +55,57 @@ export default function Volunteer() {
     fetchVolunteers();
   }, []);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // Build the final message to send to API
+  const buildMessage = () => {
+    let reasonText = form.reason;
+    if (form.reason === "Other" && form.otherReason.trim()) {
+      reasonText = form.otherReason.trim();
+    }
+    let message = `🌍 Region: ${form.region || "Not specified"}\n💡 Reason: ${reasonText}`;
+    if (form.additionalComments.trim()) {
+      message += `\n\n📝 Additional comments:\n${form.additionalComments}`;
+    }
+    return message;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const message = buildMessage();
+
     try {
       const res = await fetch("https://ngo-website-wzab.onrender.com/api/volunteer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          message: message,
+        }),
       });
       const data = await res.json();
       if (data.success) {
         setSubmitted(true);
-        setForm({ name: "", email: "", phone: "", message: "" });
+        setForm({
+          name: "",
+          email: "",
+          phone: "",
+          region: "",
+          reason: "",
+          otherReason: "",
+          additionalComments: "",
+        });
         setTimeout(() => setSubmitted(false), 5000);
-        fetchVolunteers(); // refresh list
+        
+        // Wait 1.5 seconds to ensure backend processes and then refetch
+        setTimeout(() => {
+          fetchVolunteers();
+        }, 1500);
       } else {
         alert(data.error || "Error submitting form ❌");
       }
@@ -54,13 +117,11 @@ export default function Volunteer() {
     }
   };
 
-  // Open modal with selected volunteer
   const handleViewVolunteer = (volunteer) => {
     setSelectedVolunteer(volunteer);
     setShowViewModal(true);
   };
 
-  // Helper: format date
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -70,18 +131,12 @@ export default function Volunteer() {
     });
   };
 
-  // Helper: get status badge class
   const getStatusClass = (status) => {
     return `status-badge status-${status}`;
   };
 
-  // Helper: get role label
   const getRoleLabel = (role) => {
-    const roles = {
-      admin: "Admin",
-      editor: "Editor",
-      volunteer: "Volunteer",
-    };
+    const roles = { admin: "Admin", editor: "Editor", volunteer: "Volunteer" };
     return roles[role] || role;
   };
 
@@ -92,24 +147,89 @@ export default function Volunteer() {
 
         {/* Form Section */}
         <div className="volunteer-form-container">
-          {submitted && <div className="success-message">Thank you! We'll contact you soon.</div>}
+          {submitted && <div className="success-message">✅ Thank you! We'll contact you soon.</div>}
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <span className="input-icon">👤</span>
-              <input type="text" name="name" placeholder="Full Name *" required value={form.name} onChange={handleChange} />
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name *"
+                required
+                value={form.name}
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group">
               <span className="input-icon">📧</span>
-              <input type="email" name="email" placeholder="Email Address *" required value={form.email} onChange={handleChange} />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address *"
+                required
+                value={form.email}
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group">
               <span className="input-icon">📞</span>
-              <input type="tel" name="phone" placeholder="Phone Number *" required value={form.phone} onChange={handleChange} />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number *"
+                required
+                value={form.phone}
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group">
-              <span className="input-icon">💬</span>
-              <textarea name="message" rows="4" placeholder="Why do you want to volunteer?" value={form.message} onChange={handleChange}></textarea>
+              <span className="input-icon">📍</span>
+              <input
+                type="text"
+                name="region"
+                placeholder="Your Region / City (e.g., Mumbai, Delhi, etc.)"
+                value={form.region}
+                onChange={handleChange}
+              />
             </div>
+
+            <div className="form-group">
+              <span className="input-icon">💡</span>
+              <select name="reason" value={form.reason} onChange={handleChange} required>
+                <option value="">Select a reason to volunteer *</option>
+                {reasonOptions.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {form.reason === "Other" && (
+              <div className="form-group">
+                <span className="input-icon">✏️</span>
+                <input
+                  type="text"
+                  name="otherReason"
+                  placeholder="Please specify your reason"
+                  value={form.otherReason}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            )}
+
+            <div className="form-group">
+              <span className="input-icon">💬</span>
+              <textarea
+                name="additionalComments"
+                rows="3"
+                placeholder="Anything else you'd like to share? (optional)"
+                value={form.additionalComments}
+                onChange={handleChange}
+              ></textarea>
+            </div>
+
             <button type="submit" className="submit-volunteer-btn" disabled={loading}>
               {loading ? "Submitting..." : "Submit Application"}
             </button>
@@ -118,13 +238,26 @@ export default function Volunteer() {
 
         {/* Volunteer List Section */}
         <div className="volunteer-list-section">
-          <h2>Our Volunteers ({volunteers.length})</h2>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <h2>Our Volunteers ({volunteers.length})</h2>
+            <button 
+              onClick={fetchVolunteers} 
+              disabled={refreshing}
+              className="refresh-btn"
+            >
+              {refreshing ? "🔄" : "⟳ Refresh"}
+            </button>
+          </div>
           <div className="volunteer-grid">
             {volunteers.length === 0 ? (
               <p className="no-volunteers">No volunteers yet. Be the first!</p>
             ) : (
               volunteers.map((vol) => (
-                <div key={vol._id} className="volunteer-card" onClick={() => handleViewVolunteer(vol)}>
+                <div
+                  key={vol._id}
+                  className="volunteer-card"
+                  onClick={() => handleViewVolunteer(vol)}
+                >
                   <div className="volunteer-avatar">
                     {vol.name.charAt(0).toUpperCase()}
                   </div>
@@ -132,8 +265,15 @@ export default function Volunteer() {
                     <h3>{vol.name}</h3>
                     <p className="volunteer-email">{vol.email}</p>
                     {vol.phone && <p className="volunteer-phone">{vol.phone}</p>}
-                    {vol.message && <p className="volunteer-message">"{vol.message.substring(0, 100)}"</p>}
-                    <small className="volunteer-date">Joined: {formatDate(vol.joinDate)}</small>
+                    {vol.message && (
+                      <p className="volunteer-message">
+                        "{vol.message.substring(0, 100)}"
+                        {vol.message.length > 100 ? "..." : ""}
+                      </p>
+                    )}
+                    <small className="volunteer-date">
+                      Joined: {formatDate(vol.joinDate)}
+                    </small>
                   </div>
                 </div>
               ))
@@ -148,10 +288,12 @@ export default function Volunteer() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Volunteer Details</h3>
-              <button className="close-modal" onClick={() => setShowViewModal(false)}>×</button>
+              <button className="close-modal" onClick={() => setShowViewModal(false)}>
+                ×
+              </button>
             </div>
             <div className="modal-body">
-              <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              <div className="modal-avatar">
                 <div
                   className="user-avatar"
                   style={{
@@ -162,7 +304,8 @@ export default function Volunteer() {
                     margin: "0 auto",
                   }}
                 >
-                  {selectedVolunteer.avatar || selectedVolunteer.name.charAt(0).toUpperCase()}
+                  {selectedVolunteer.avatar ||
+                    selectedVolunteer.name.charAt(0).toUpperCase()}
                 </div>
               </div>
 
@@ -191,8 +334,10 @@ export default function Volunteer() {
                 <div className="detail-value">{selectedVolunteer.phone || "Not provided"}</div>
               </div>
               <div className="detail-row">
-                <div className="detail-label">Why Volunteer:</div>
-                <div className="detail-value">{selectedVolunteer.message || "No message provided"}</div>
+                <div className="detail-label">Message:</div>
+                <div className="detail-value">
+                  {selectedVolunteer.message || "No message provided"}
+                </div>
               </div>
               <div className="detail-row">
                 <div className="detail-label">Join Date:</div>
