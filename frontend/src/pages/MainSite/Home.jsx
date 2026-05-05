@@ -1,12 +1,16 @@
 // frontend/src/pages/MainSite/Home.jsx
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ParallaxBanner } from "react-scroll-parallax";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { FaDonate, FaHandsHelping, FaChild, FaFemale, FaHeartbeat, FaSchool, FaTimes, FaFilePdf } from "react-icons/fa";
+import { 
+  FaDonate, FaHandsHelping, FaChild, FaFemale, FaHeartbeat, FaSchool, 
+  FaTimes, FaFilePdf, FaMapMarkerAlt, FaPhone, FaEnvelope, FaFacebook, 
+  FaTwitter, FaInstagram, FaLinkedin, FaArrowRight 
+} from "react-icons/fa";
 import "./Home.css";
 
 // Gallery images
@@ -48,33 +52,75 @@ function StatCard({ value, label, suffix = "+" }) {
 
 export default function Home() {
   const [showQRModal, setShowQRModal] = useState(false);
+  
+  // Refs for animated sections
+  const statsRef = useRef(null);
+  const programsRef = useRef(null);
+  const galleryRef = useRef(null);
+  const testimonialsRef = useRef(null);
+
+  // Animated background floating particles
+  useEffect(() => {
+    const icons = ["❤️", "🤝", "🌱", "📚", "🏥", "🍲", "🎓", "🌍", "🕊️", "🤲", "✨"];
+    for (let i = 0; i < 24; i++) {
+      const div = document.createElement('div');
+      div.classList.add('floating-bg-particle');
+      div.style.left = Math.random() * 100 + '%';
+      div.style.animationDelay = Math.random() * 20 + 's';
+      div.style.animationDuration = 18 + Math.random() * 30 + 's';
+      div.style.fontSize = 1.3 + Math.random() * 2 + 'rem';
+      div.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+      document.body.appendChild(div);
+    }
+    return () => {
+      document.querySelectorAll('.floating-bg-particle').forEach(el => el.remove());
+    };
+  }, []);
+
+  // Scroll‑triggered animations (Intersection Observer)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animated');
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    const sections = [statsRef.current, programsRef.current, galleryRef.current, testimonialsRef.current];
+    sections.forEach(section => {
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleOpenQR = () => setShowQRModal(true);
   const handleCloseQR = () => setShowQRModal(false);
 
-  // CSR PDF handlers
   const handleDownloadCSR = () => {
     const link = document.createElement('a');
-    link.href = '/files/csr-certificate.pdf'; // adjust path as needed
+    link.href = '/files/csr-certificate.pdf';
     link.download = 'csr-certificate.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
   const handleDownloadReceipt = () => {
-  // Create a link to a static file in your public folder
-  const link = document.createElement('a');
-  link.href = '/receipt.pdf';     // place receipt.pdf in public/
-  link.download = 'donation_receipt.pdf';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-const handleDonateClick = () => {
-  handleDownloadReceipt();   // download file
-  handleOpenQR();            // open QR modal (existing)
-};
-
+    const link = document.createElement('a');
+    link.href = '/receipt.pdf';
+    link.download = 'donation_receipt.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  const handleDonateClick = () => {
+    handleDownloadReceipt();
+    handleOpenQR();
+  };
   const handleOpenCSR = () => {
     window.open('/files/csr-certificate.pdf', '_blank');
   };
@@ -109,7 +155,7 @@ const handleDonateClick = () => {
         className="hero-banner"
       />
 
-      {/* Who We Are */}
+      {/* Who We Are (static, no animation) */}
       <section className="section who-we-are">
         <div className="container">
           <h2>Who We Are</h2>
@@ -122,10 +168,10 @@ const handleDonateClick = () => {
         </div>
       </section>
 
-      {/* Impact Stats */}
-      <section className="section stats-section">
+      {/* Impact Stats - animated */}
+      <section className="section stats-section animate-on-scroll" ref={statsRef}>
         <div className="container">
-          <h2>Our Impact So Far</h2>
+          <h2 >Our Impact So Far</h2>
           <div className="stats-grid">
             <StatCard value={500} label="Children Supported" />
             <StatCard value={200} label="Women Empowered" />
@@ -135,8 +181,8 @@ const handleDonateClick = () => {
         </div>
       </section>
 
-      {/* Key Programs */}
-      <section className="section programs-section">
+      {/* Key Programs - animated */}
+      <section className="section programs-section animate-on-scroll" ref={programsRef}>
         <div className="container">
           <h2>Our Key Programs</h2>
           <div className="programs-grid">
@@ -151,8 +197,8 @@ const handleDonateClick = () => {
         </div>
       </section>
 
-      {/* Gallery */}
-      <section className="section gallery-section">
+      {/* Gallery - animated */}
+      <section className="section gallery-section animate-on-scroll" ref={galleryRef}>
         <div className="container">
           <h2>Our Activities in Photos</h2>
           <Swiper
@@ -177,8 +223,8 @@ const handleDonateClick = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="section testimonials-section">
+      {/* Testimonials - animated */}
+      <section className="section testimonials-section animate-on-scroll" ref={testimonialsRef}>
         <div className="container">
           <h2>Community Says</h2>
           <Swiper
@@ -202,7 +248,7 @@ const handleDonateClick = () => {
         </div>
       </section>
 
-      {/* CSR & Partnership Opportunities */}
+      {/* CSR Section (static, no animation) */}
       <section className="section csr-section">
         <div className="container">
           <h2>CSR & Partnership Opportunities</h2>
@@ -222,31 +268,78 @@ const handleDonateClick = () => {
               <FaFilePdf /> Download CSR Certificate
             </button>
             <button onClick={handleOpenCSR} className="csr-view-btn">
-              👁️ View Certificate (opens in new tab)
+              👁️ View Certificate
             </button>
           </div>
         </div>
       </section>
 
-      {/* Donation CTA */}
+      {/* Donation CTA (static) */}
       <section className="cta-section">
         <div className="container">
           <h2>Support Our Mission</h2>
           <p>Your donation can change lives. Partner with us for CSR.</p>
           <div className="cta-buttons">
-            <button className="cta-primary" onClick={handleDonateClick} >
+            <button className="cta-primary" onClick={handleDonateClick}>
               <FaDonate /> Donate Now
             </button>
-            <a href="https://wa.me/917015700961?text=Hello%20I%20want%20to%20become%20a%20partner%20with%20your%20NGO" target="_blank" >
-            <button className="cta-secondary">
-              <FaHandsHelping /> Become a Partner
-            </button>
+            <a href="https://wa.me/917015700961?text=Hello%20I%20want%20to%20become%20a%20partner%20with%20your%20NGO" target="_blank" rel="noopener noreferrer">
+              <button className="cta-secondary">
+                <FaHandsHelping /> Become a Partner
+              </button>
             </a>
           </div>
         </div>
       </section>
 
-      {/* QR Code Modal */}
+      {/* Footer */}
+      <footer className="main-footer">
+        <div className="container">
+          <div className="footer-grid">
+            <div className="footer-about">
+              <h3>Ma Indrawti Devi Nari Shakti Foundation</h3>
+              <p>Empowering rural communities through education, health, and women's upliftment since 2015.</p>
+              <div className="footer-social">
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebook /></a>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><FaTwitter /></a>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><FaLinkedin /></a>
+              </div>
+            </div>
+            <div className="footer-links">
+              <h4>Quick Links</h4>
+              <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/programs">Programs</a></li>
+                <li><a href="/gallery">Gallery</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/volunteer">Volunteer</a></li>
+              </ul>
+            </div>
+            <div className="footer-contact">
+              <h4>Contact Info</h4>
+              <p><FaMapMarkerAlt /> Parshuram Chowk, Damodar Pana, Mandhana, Bhiwani - 127032, Haryana</p>
+              <p><FaPhone /> +91 70157 00961</p>
+              <p><FaEnvelope /> contact@indufoundation.org.in</p>
+            </div>
+            <div className="footer-newsletter">
+              <h4>Stay Updated</h4>
+              <p>Subscribe to our newsletter for latest updates and stories.</p>
+              <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
+                <input type="email" placeholder="Your email address" required />
+                <button type="submit"><FaArrowRight /></button>
+              </form>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; {new Date().getFullYear()} Ma Indrawti Devi Nari Shakti Foundation. All rights reserved.</p>
+            <p>Built with ❤️ for social impact | Registered under Societies Registration Act, 1860</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* QR Modal */}
       {showQRModal && (
         <div className="qr-modal-overlay" onClick={handleCloseQR}>
           <div className="qr-modal-content" onClick={(e) => e.stopPropagation()}>

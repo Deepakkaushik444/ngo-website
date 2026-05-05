@@ -33,10 +33,7 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer className="main-footer">
-        <p>© 2025 Ma Indrawti Devi Nari Shakti Foundation | All Rights Reserved</p>
-        <p>📍 Damodar Pana Mandhana, Bhiwani - 127032 | 📞 +91 12345 67890</p>
-      </footer>
+      
     </div>
   );
 }
