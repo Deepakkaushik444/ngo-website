@@ -3,35 +3,36 @@ const router = express.Router();
 const nodemailer = require("nodemailer");
 require('dotenv').config();
 
-
-// ✅ Create transporter
+// ✅ Force IPv4 by explicitly defining host/port/secure + family:4
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",     // explicit hostname
+  port: 465,                  // SSL port
+  secure: true,               // use SSL
+  family: 4,                  // 👈 FORCE IPv4 (critical fix)
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
 
-// ✅ Verify transporter (VERY IMPORTANT)
+// Verify connection (optional but helpful)
 transporter.verify((error, success) => {
   if (error) {
     console.log("❌ Transporter Error:", error);
   } else {
-    console.log("✅ Mail server ready");
+    console.log("✅ Mail server ready (IPv4 forced)");
   }
 });
 
-// ✅ Route
 router.post("/", async (req, res) => {
   try {
-    const { name, email, subject, message } = req.body;   // ✅ use subject
+    const { name, email, subject, message } = req.body;
 
     // Email to user
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: `Thanks for contacting us - ${subject}`,   // ✅ now defined
+      subject: `Thanks for contacting us - ${subject}`,
       html: `<h2>Hello ${name}</h2><p>We received your message:</p><p>${message}</p><br/><p>We will contact you soon.</p>`,
     });
 
@@ -45,7 +46,7 @@ router.post("/", async (req, res) => {
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error(error);
+    console.error("Send mail error:", error.message);
     return res.status(500).json({ success: false, error: error.message });
   }
 });
