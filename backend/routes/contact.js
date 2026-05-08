@@ -5,13 +5,17 @@ require('dotenv').config();
 
 // ✅ Force IPv4 by explicitly defining host/port/secure + family:4
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",     // explicit hostname
-  port: 465,                  // SSL port
-  secure: true,               // use SSL
-  family: 4,                  // 👈 FORCE IPv4 (critical fix)
+  host: "smtp.gmail.com",
+  port: 587,                // <-- change from 465 to 587
+  secure: false,            // <-- false for port 587 (STARTTLS)
+  family: 4,                // keep this
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
+  },
+  tls: {
+    ciphers: "SSLv3",       // sometimes needed for Gmail
+    rejectUnauthorized: true,
   },
 });
 
