@@ -18,13 +18,14 @@ const galleryImages = [
   { original: "/images/youth.png", title: "Motivation" },
   { original: "/images/game.png", title: "Game" },
   { original: "/images/yoga.png", title: "Yoga Program" },
+  { original: "/images/logo.jpeg", title: "Activities" },
   
   { original: "/images/price.png", title: "Price Distribution" },
   { original: "/images/playschool.jpeg", title: "School Support" },
 ];
 
 const testimonials = [
-  { name: "Shri Karmbit Sharma (Principal)", text: "संस्था द्वारा बच्चों की शिक्षा में अद्भुत कार्य किया जा रहा है।", role: "Principal, Aadarsh Sec. Sr. School" },
+  { name: "Shri Karmbir Sharma (Principal)", text: "संस्था द्वारा बच्चों की शिक्षा में अद्भुत कार्य किया जा रहा है।", role: "Principal, Aadarsh Sec. Sr. School" },
   { name: "Smt. Sita Devi (Sarpanch)", text: "महिला सशक्तिकरण के क्षेत्र में यह संस्था मील का पत्थर है।", role: "Sarpanch, Mandhana" },
 ];
 

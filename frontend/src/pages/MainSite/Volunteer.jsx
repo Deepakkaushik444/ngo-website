@@ -263,8 +263,7 @@ export default function Volunteer() {
                   </div>
                   <div className="volunteer-info">
                     <h3>{vol.name}</h3>
-                    <p className="volunteer-email">{vol.email}</p>
-                    {vol.phone && <p className="volunteer-phone">{vol.phone}</p>}
+                    
                     {vol.message && (
                       <p className="volunteer-message">
                         "{vol.message.substring(0, 100)}"

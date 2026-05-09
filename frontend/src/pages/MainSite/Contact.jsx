@@ -10,9 +10,9 @@ export default function Contact() {
   const formRef = useRef();
 
   // 🔁 REPLACE THESE WITH YOUR OWN EMAILJS CREDENTIALS
-  const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';      // e.g., 'service_abc123'
-  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';    // e.g., 'template_xyz789'
-  const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';      // e.g., 'user_abc123xyz'
+  const EMAILJS_SERVICE_ID = 'service_f6831yz';      // e.g., 'service_abc123'
+  const EMAILJS_TEMPLATE_ID = 'template_612cddc';    // e.g., 'template_xyz789'
+  const EMAILJS_PUBLIC_KEY = 'W8n2ZFS-d-NPjBeIK';      // e.g., 'user_abc123xyz'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
