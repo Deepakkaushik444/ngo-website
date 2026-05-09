@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaPaperPlane } from 'react-icons/fa';
+import emailjs from '@emailjs/browser';
 import './Contact.css';
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
+  const formRef = useRef();
+
+  // 🔁 REPLACE THESE WITH YOUR OWN EMAILJS CREDENTIALS
+  const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';      // e.g., 'service_abc123'
+  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';    // e.g., 'template_xyz789'
+  const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';      // e.g., 'user_abc123xyz'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,22 +23,38 @@ export default function Contact() {
     setIsSubmitting(true);
     setStatus(null);
 
-    try {
-      const response = await fetch('https://ngo-website-wzab.onrender.com/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+    // Prepare template parameters exactly matching your EmailJS template variables
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    };
 
-      const data = await response.json();
-      if (response.ok) {
-        setStatus({ type: 'success', text: 'Message sent successfully! We’ll get back to you soon.' });
+    try {
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
+      if (response.status === 200) {
+        setStatus({
+          type: 'success',
+          text: 'Message sent successfully! We’ll get back to you soon.'
+        });
+        // Reset form on success
         setFormData({ name: '', email: '', subject: '', message: '' });
       } else {
-        throw new Error(data.error || 'Something went wrong.');
+        throw new Error('Unexpected response from EmailJS');
       }
     } catch (err) {
-      setStatus({ type: 'error', text: 'Network error. Please try again later.' });
+      console.error('EmailJS error:', err);
+      setStatus({
+        type: 'error',
+        text: 'Failed to send message. Please check your EmailJS configuration or try again later.'
+      });
     } finally {
       setIsSubmitting(false);
       setTimeout(() => setStatus(null), 5000);
@@ -77,7 +100,7 @@ export default function Contact() {
           {/* Right – Contact Form */}
           <div className="contact-form-wrapper">
             <h2>Send a Message</h2>
-            <form onSubmit={handleSubmit}>
+            <form ref={formRef} onSubmit={handleSubmit}>
               <div className="input-group">
                 <input type="text" name="name" placeholder="Your Name *" value={formData.name} onChange={handleChange} required />
               </div>

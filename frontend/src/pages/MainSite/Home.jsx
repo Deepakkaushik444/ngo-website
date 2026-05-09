@@ -18,14 +18,14 @@ const galleryImages = [
   { original: "/images/youth.png", title: "Motivation" },
   { original: "/images/game.png", title: "Game" },
   { original: "/images/yoga.png", title: "Yoga Program" },
-  { original: "/images/ration.jpeg", title: "Ration Kit Distribution" },
+  
   { original: "/images/price.png", title: "Price Distribution" },
   { original: "/images/playschool.jpeg", title: "School Support" },
 ];
 
 const testimonials = [
-  { name: "Shri Ramesh Sharma (Principal)", text: "संस्था द्वारा बच्चों की शिक्षा में अद्भुत कार्य किया जा रहा है।", role: "Principal, Govt School" },
-  { name: "Smt. Sushila Devi (Sarpanch)", text: "महिला सशक्तिकरण के क्षेत्र में यह संस्था मील का पत्थर है।", role: "Sarpanch, Damodar Pana" },
+  { name: "Shri Karmbit Sharma (Principal)", text: "संस्था द्वारा बच्चों की शिक्षा में अद्भुत कार्य किया जा रहा है।", role: "Principal, Aadarsh Sec. Sr. School" },
+  { name: "Smt. Sita Devi (Sarpanch)", text: "महिला सशक्तिकरण के क्षेत्र में यह संस्था मील का पत्थर है।", role: "Sarpanch, Mandhana" },
 ];
 
 const programs = [
@@ -163,7 +163,7 @@ export default function Home() {
           <div className="trust-badges">
             <span>✅ 80G Certified</span>
             <span>✅ 12A Registered</span>
-            <span>✅ Darpan ID: HR/2024/123456</span>
+            <span>✅ Darpan ID: HR/2025/0859355</span>
           </div>
         </div>
       </section>
@@ -300,9 +300,9 @@ export default function Home() {
               <h3>Ma Indrawti Devi Nari Shakti Foundation</h3>
               <p>Empowering rural communities through education, health, and women's upliftment since 2015.</p>
               <div className="footer-social">
-                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebook /></a>
+                <a href="https://www.facebook.com/share/1AfvkyJaAQ/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebook /></a>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><FaTwitter /></a>
-                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
+                <a href="https://www.instagram.com/ngoindu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><FaLinkedin /></a>
               </div>
             </div>
@@ -348,7 +348,7 @@ export default function Home() {
             </button>
             <div className="qr-modal-body">
               <h3>Scan to Donate</h3>
-              <img src="/images/qr1.jpg" alt="Donation QR Code" className="qr-image" />
+              <img src="/images/qrfinal.jpeg" alt="Donation QR Code" className="qr-image" />
               <p className="qr-note">Scan with any UPI app to support our cause</p>
             </div>
           </div>
