@@ -125,9 +125,9 @@ export default function Contact() {
 
             {/* Social Icons */}
             <div className="social-links">
-              <a href="#" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+              <a href="#" target="_blank" rel="https://www.facebook.com/share/1AfvkyJaAQ/"><FaFacebookF /></a>
               <a href="#" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
-              <a href="#" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+              <a href="https://www.instagram.com/ngoindu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
               <a href="#" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
             </div>
           </div>
