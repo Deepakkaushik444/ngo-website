@@ -135,6 +135,7 @@
 }
 
 /* ===== INPUTS – NO BORDER, ONLY BACKGROUND + BOX SHADOW ===== */
+/* ===== INPUTS – NO BORDER, FORCED VISIBLE PLACEHOLDERS ===== */
 .input-group {
   margin-bottom: 28px;
 }
@@ -144,9 +145,9 @@
   width: 100%;
   padding: 16px 22px;
   font-size: 1rem;
-  border: none;                     /* 👈 NO BORDER */
-  border-radius: 60px;              /* pill shape for inputs, but textarea slightly different */
-  background: #fefcf7;
+  border: none;                     
+  border-radius: 60px;              
+  background: #ffffff;              /* changed from #fefcf7 to pure white for better contrast */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02), inset 0 1px 2px rgba(0,0,0,0.02);
   transition: all 0.25s ease;
   font-family: inherit;
@@ -154,27 +155,54 @@
   outline: none;
 }
 
+/* FORCE VISIBLE PLACEHOLDERS - HIGH SPECIFICITY */
+.input-group input::-webkit-input-placeholder,
+.input-group textarea::-webkit-input-placeholder {
+  color: #5a6e85 !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}
+
+.input-group input:-moz-placeholder,
+.input-group textarea:-moz-placeholder {
+  color: #5a6e85 !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}
+
+.input-group input::-moz-placeholder,
+.input-group textarea::-moz-placeholder {
+  color: #5a6e85 !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}
+
+.input-group input:-ms-input-placeholder,
+.input-group textarea:-ms-input-placeholder {
+  color: #5a6e85 !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: #5a6e85 !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}
+
 .input-group textarea {
   border-radius: 28px;
   resize: vertical;
 }
 
-/* placeholder styling – soft color, no border visible */
-.input-group input::placeholder,
-.input-group textarea::placeholder {
-  color: #cbd5e1;
-  font-weight: 400;
-  letter-spacing: 0.2px;
-}
-
-/* Focus effect: larger shadow + inner glow, still no border */
+/* Focus effect – unchanged */
 .input-group input:focus,
 .input-group textarea:focus {
   box-shadow: 0 12px 20px -12px rgba(0, 120, 100, 0.3), 0 0 0 3px rgba(78, 205, 196, 0.2);
   background: #ffffff;
   transform: scale(1.01);
 }
-
 /* submit button – bright gradient */
 button[type="submit"] {
   background: linear-gradient(105deg, #ff8c42, #ff6b6b);
