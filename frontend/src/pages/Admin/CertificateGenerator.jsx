@@ -15,7 +15,7 @@ const DEFAULT_STAMP_URL = "/images/st1.png";
 const API_URL = "https://ngo-website-wzab.onrender.com/api/certificates";
 export default function CertificateGenerator() {
   const [formData, setFormData] = useState({
-    ngoName: "Maa Indrawati Devi Nari Shakti Foundation",
+    ngoName: "MA Indrawati Devi Nari Shakti Foundation",
     recipientName: "Dr. Priya Sharma",
     certificateType: "Humanitarian Service",
     description: "Honoring your exceptional commitment, inspiring service, and significant contribution toward social empowerment, humanitarian support, and community development.",
