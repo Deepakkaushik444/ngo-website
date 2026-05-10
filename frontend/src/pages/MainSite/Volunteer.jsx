@@ -312,10 +312,7 @@ export default function Volunteer() {
                 <div className="detail-label">Full Name:</div>
                 <div className="detail-value">{selectedVolunteer.name}</div>
               </div>
-              <div className="detail-row">
-                <div className="detail-label">Email:</div>
-                <div className="detail-value">{selectedVolunteer.email}</div>
-              </div>
+              
               <div className="detail-row">
                 <div className="detail-label">Role:</div>
                 <div className="detail-value">{getRoleLabel(selectedVolunteer.role)}</div>
@@ -328,10 +325,7 @@ export default function Volunteer() {
                   </span>
                 </div>
               </div>
-              <div className="detail-row">
-                <div className="detail-label">Phone:</div>
-                <div className="detail-value">{selectedVolunteer.phone || "Not provided"}</div>
-              </div>
+              
               <div className="detail-row">
                 <div className="detail-label">Message:</div>
                 <div className="detail-value">

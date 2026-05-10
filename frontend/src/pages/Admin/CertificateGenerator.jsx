@@ -436,7 +436,7 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
 
                    <div className="certificate-seal">
   <img 
-    src="../images/stamp.png"   // 👈 DUMMY URL – replace with your stamp image URL later
+    src="../images/st.png"   // 👈 DUMMY URL – replace with your stamp image URL later
     alt="Organization Stamp"
     className="seal-image"
     style={{ width: '80px', height: '80px', objectFit: 'contain' }}
