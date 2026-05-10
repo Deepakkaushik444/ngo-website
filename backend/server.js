@@ -52,6 +52,9 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.log("DB error:", err));
 // ================= ROUTES =================
 
+app.get('/api/certificates', (req, res) => {
+  res.json({ message: 'Certificate API is working. Use POST to save, or GET /verify/:certId to verify.' });
+});
 
 
 // GET all donations (with optional status & search)
