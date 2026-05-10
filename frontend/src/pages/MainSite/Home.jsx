@@ -36,6 +36,10 @@ const galleryImages = [
   { original: "/images/logo2 (8).jpeg", title: "Activities" },
   { original: "/images/logo2 (9).jpeg", title: "Activities" },
   { original: "/images/logo2 (10).jpeg", title: "Activities" },
+  { original: "/images/logo6.jpeg", title: "Activities" },
+  { original: "/images/logo5.jpeg", title: "Activities" },
+  { original: "/images/logo3.jpeg", title: "Activities" },
+  { original: "/images/logo4.jpeg", title: "Activities" },
 
   { original: "/images/price.png", title: "Price Distribution" },
   { original: "/images/playschool.jpeg", title: "School Support" },
@@ -271,7 +275,7 @@ export default function Home() {
         <div className="container">
           <h2>CSR & Partnership Opportunities</h2>
           <p className="csr-intro">
-            Corporate partners can support <strong>Ma Indrawti Devi Nari Shakti Foundation</strong> under CSR for education, health, and women empowerment initiatives in rural Haryana.
+            Corporate partners can support <strong>Ma Indrawti Devi Nari Shakti Foundation</strong> under CSR for education, health, and women empowerment initiatives in India.
           </p>
           <div className="csr-options">
             {csrOptions.map((opt, idx) => (

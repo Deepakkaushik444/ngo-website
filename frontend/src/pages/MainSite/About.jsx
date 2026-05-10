@@ -21,7 +21,7 @@ export default function About() {
         <h1>About Us</h1>
         <div className="about-content">
           <p>Ma Indrawti Devi Nari Shakti Foundation is a community-based NGO dedicated to children's education, women empowerment, and rural development.</p>
-          <p>Registered under the Societies Registration Act, we have been serving the Mandhana region of Bhiwani, Haryana since 2015.</p>
+          <p>Registered under the Societies Registration Act, we have been serving the Mandhana region of Bhiwani, Haryana since 2025.</p>
           
           <h2>Our Vision</h2>
           <p>Ma Indrawti Devi Nari Shakti Foundation का vision मुख्य रूप से एक ऐसे समाज का निर्माण करना है जहाँ:<br/>
