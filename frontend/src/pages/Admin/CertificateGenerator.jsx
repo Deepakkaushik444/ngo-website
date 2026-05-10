@@ -434,11 +434,14 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
                       </div>
                     </div>
 
-                    <div className="certificate-seal">
-                      <div className="seal" style={{ borderColor: templates[template].borderColor, color: templates[template].borderColor }}>
-                        {formData.ngoName.charAt(0)}
-                      </div>
-                    </div>
+                   <div className="certificate-seal">
+  <img 
+    src="../images/stamp.png"   // 👈 DUMMY URL – replace with your stamp image URL later
+    alt="Organization Stamp"
+    className="seal-image"
+    style={{ width: '80px', height: '80px', objectFit: 'contain' }}
+  />
+</div>
 
                     <div className="certificate-number">
                       Certificate ID: {formData.certificateNumber}

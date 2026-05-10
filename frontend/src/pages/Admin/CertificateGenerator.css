@@ -399,24 +399,10 @@
   margin-bottom: 30px;
 }
 
-.signature-block {
-  flex: 1;
-  text-align: center;
-}
 
-.signature-container {
-  margin-bottom: 10px;
-  min-height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.signature-img {
-  max-height: 60px;
-  max-width: 180px;
-  object-fit: contain;
-}
+
+
 
 .signature-line {
   width: 180px;
@@ -547,4 +533,35 @@
   .certificate-card {
     padding: 20px;
   }
+}
+.seal-image {
+  border-radius: 50%;
+  border: 2px solid #c0392b;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: white;
+  padding: 4px;
+}
+
+/* Signature image – larger size */
+.signature-img {
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain;
+}
+
+/* Signature container – ensure enough space */
+.signature-container {
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+/* Signature block overall */
+.signature-block {
+  text-align: center;
+  min-width: 180px;
 }
