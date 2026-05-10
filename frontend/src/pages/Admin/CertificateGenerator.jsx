@@ -1,13 +1,18 @@
 // pages/Admin/CertificateGenerator.jsx
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import html2canvas from "html2canvas";
+import QRCode from "qrcode";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 import './CertificateGenerator.css';
 
 // ================= DEFAULT IMAGE URLs =================
-// Replace these with your actual image URLs
 const DEFAULT_LOGO_URL = "/images/main.jpg";
 const DEFAULT_SIGNATURE_URL = "/images/stamp.png";
 const DEFAULT_STAMP_URL = "/images/st1.png";
+
+// Backend API URL – change to your production URL when deploying
+const API_URL = "http://localhost:5000/api/certificates";
 
 export default function CertificateGenerator() {
   const [formData, setFormData] = useState({
@@ -15,7 +20,7 @@ export default function CertificateGenerator() {
     recipientName: "Dr. Priya Sharma",
     certificateType: "Humanitarian Service",
     description: "Honoring your exceptional commitment, inspiring service, and significant contribution toward social empowerment, humanitarian support, and community development.",
-    issueDate: new Date().toISOString().split('T')[0], // today's date
+    issueDate: new Date().toISOString().split('T')[0],
     expiryDate: "",
     certificateNumber: "NGO-" + Date.now(),
     signatureName: "Indu",
@@ -24,11 +29,25 @@ export default function CertificateGenerator() {
 
   const [template, setTemplate] = useState("classic");
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
-  const [orgLogo, setOrgLogo] = useState(null);        // null = use DEFAULT_LOGO_URL
-  const [adminSignature, setAdminSignature] = useState(null); // null = use DEFAULT_SIGNATURE_URL
+  const [orgLogo, setOrgLogo] = useState(null);
+  const [adminSignature, setAdminSignature] = useState(null);
   const certificateRef = useRef(null);
   const logoInputRef = useRef(null);
   const signatureInputRef = useRef(null);
+
+  // QR & verification states
+  const [certificateId, setCertificateId] = useState(() => uuidv4().slice(0, 8));
+  const [qrDataUrl, setQrDataUrl] = useState("");
+
+  // Generate QR code when certificateId changes
+  useEffect(() => {
+    // The QR code will point to your verification page (not the raw API)
+    const verificationUrl = `${window.location.origin}/verify/${certificateId}`;
+    QRCode.toDataURL(verificationUrl, { width: 100, margin: 1 }, (err, url) => {
+      if (!err) setQrDataUrl(url);
+      else console.error("QR generation error", err);
+    });
+  }, [certificateId]);
 
   const certificateTypes = [
     "Humanitarian Service",
@@ -106,31 +125,63 @@ export default function CertificateGenerator() {
     showToast(`${type === 'logo' ? 'Logo' : 'Signature'} removed (using default)`, "info");
   };
 
-  const downloadCertificate = async () => {
-    if (!certificateRef.current) return;
-    
+  // Save certificate data to MongoDB
+  const saveCertificateToDB = async () => {
+    const payload = {
+      certId: certificateId,
+      recipientName: formData.recipientName,
+      ngoName: formData.ngoName,
+      certificateType: formData.certificateType,
+      description: formData.description,
+      issueDate: formData.issueDate,
+      expiryDate: formData.expiryDate || null,
+      certificateNumber: formData.certificateNumber,
+      signatureName: formData.signatureName,
+      signatureTitle: formData.signatureTitle
+    };
     try {
-      showToast("Generating certificate...", "info");
-      
+      await axios.post(API_URL, payload);
+      showToast("Certificate saved to database! QR code is now verifiable.", "success");
+      return true;
+    } catch (error) {
+      console.error("Save error:", error);
+      showToast("Failed to save certificate to database.", "error");
+      return false;
+    }
+  };
+
+  // Download PNG (without saving – internal function)
+  const downloadCertificateOnly = async () => {
+    if (!certificateRef.current) return;
+    try {
+      showToast("Generating certificate PNG...", "info");
       const canvas = await html2canvas(certificateRef.current, {
         scale: 3,
         backgroundColor: '#ffffff',
         logging: false,
-        useCORS: true,      // allows cross-origin images (default URLs)
+        useCORS: true,
         allowTaint: false
       });
-      
       const image = canvas.toDataURL("image/png");
       const link = document.createElement('a');
       const fileName = `${formData.recipientName.replace(/\s/g, '_')}_${formData.certificateType.replace(/\s/g, '_')}_Certificate.png`;
       link.download = fileName;
       link.href = image;
       link.click();
-      
       showToast("Certificate downloaded successfully!", "success");
+      return true;
     } catch (error) {
-      console.error("Error generating certificate:", error);
-      showToast("Failed to generate certificate. Please try again.", "error");
+      console.error("Download error:", error);
+      showToast("Failed to generate certificate.", "error");
+      return false;
+    }
+  };
+
+  // MAIN ACTION: Save to DB then download (only one action for admin)
+  const handleGenerateAndDownload = async () => {
+    const saved = await saveCertificateToDB();
+    if (saved) {
+      await downloadCertificateOnly();
     }
   };
 
@@ -154,8 +205,8 @@ export default function CertificateGenerator() {
     <div className="certificate-container">
       <div className="certificate-wrapper">
         <div className="certificate-header">
-          <h1>🌍 NGO Certificate Generator</h1>
-          <p>Create impact-driven certificates with official signatures & branding</p>
+          <h1>🌍 NGO Certificate Generator (Verifiable)</h1>
+          <p>Fill in the details, then click “Generate & Download” – the certificate will be saved and a QR code added for instant verification.</p>
         </div>
 
         <div className="certificate-content">
@@ -175,16 +226,16 @@ export default function CertificateGenerator() {
                   style={{ display: 'none' }}
                   id="logo-upload"
                 />
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="upload-btn"
                   onClick={() => document.getElementById('logo-upload').click()}
                 >
                   📷 Upload Custom Logo
                 </button>
                 {orgLogo && (
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="remove-btn"
                     onClick={() => removeImage('logo')}
                   >
@@ -278,16 +329,16 @@ export default function CertificateGenerator() {
                   style={{ display: 'none' }}
                   id="signature-upload"
                 />
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="upload-btn"
                   onClick={() => document.getElementById('signature-upload').click()}
                 >
                   ✍️ Upload Custom Signature
                 </button>
                 {adminSignature && (
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="remove-btn"
                     onClick={() => removeImage('signature')}
                   >
@@ -365,9 +416,11 @@ export default function CertificateGenerator() {
           <div className="preview-panel">
             <div className="preview-header">
               <h2>📜 Certificate Preview</h2>
-              <button className="download-btn" onClick={downloadCertificate}>
-                ⬇️ Download Certificate (PNG)
-              </button>
+              <div className="button-group">
+                <button className="save-download-btn" onClick={handleGenerateAndDownload}>
+                  🎯 Generate & Download Certificate (Save + QR)
+                </button>
+              </div>
             </div>
 
             {/* Certificate Card */}
@@ -377,10 +430,9 @@ export default function CertificateGenerator() {
                   {/* Organization Logo & Header */}
                   <div className="certificate-header-section">
                     <div className="certificate-logo">
-                      {/* Use uploaded logo if present, otherwise default URL */}
-                      <img 
-                        src={orgLogo || DEFAULT_LOGO_URL} 
-                        alt="Organization Logo" 
+                      <img
+                        src={orgLogo || DEFAULT_LOGO_URL}
+                        alt="Organization Logo"
                         className="org-logo-img"
                         crossOrigin="anonymous"
                       />
@@ -390,7 +442,6 @@ export default function CertificateGenerator() {
                     </div>
                   </div>
 
-                  {/* Decorative Line */}
                   <div className="certificate-divider" style={{ background: `linear-gradient(90deg, transparent, ${templates[template].borderColor}, transparent)` }}></div>
 
                   {/* Title */}
@@ -428,43 +479,52 @@ export default function CertificateGenerator() {
                     )}
                   </div>
 
-                  {/* Footer with Signature & Seal */}
+                  {/* Footer with Signature & Seal & QR */}
                   <div className="certificate-footer">
-                    <div className="signature-area">
-                      <div className="signature-block">
-                        <div className="signature-container">
-                          {/* Use uploaded signature if present, otherwise default URL */}
-                          <img 
-                            src={adminSignature || DEFAULT_SIGNATURE_URL} 
-                            alt="Authorized Signature" 
-                            className="signature-img"
-                            crossOrigin="anonymous"
-                          />
+                    <div className="seal-signature-container">
+                      {/* Left: Organizational Seal + Director's signature overlay */}
+                      <div className="seal-wrapper">
+                        <img
+                          src={DEFAULT_STAMP_URL}
+                          alt="Organization Seal"
+                          className="seal-image"
+                          style={{ maxHeight: '130px' }}
+                        />
+                        <div className="signature-on-seal">
+                          {formData.signatureName}
                         </div>
-                        <div className="signature-name">{formData.signatureName}</div>
-                        <div className="signature-title">{formData.signatureTitle}</div>
+                        <div className="seal-label">Organizational Seal</div>
                       </div>
-                      <div className="signature-block">
-                        <div className="signature-container">
-                          <div className="signature-line"></div>
-                        </div>
-                        <div className="signature-name">Organization Seal</div>
-                        <div className="signature-title">{formData.ngoName}</div>
-                      </div>
-                    </div>
 
-                    <div className="certificate-seal">
-                      <img 
-                        src={DEFAULT_STAMP_URL}
-                        alt="Organization Stamp"
-                        className="seal-image"
-                        style={{ width: '100px', height: '100px', objectFit: 'contain' }}
-                        crossOrigin="anonymous"
-                      />
+                      {/* Director's info beside the seal */}
+                      <div className="director-info">
+                        <div className="director-name">{formData.signatureName}</div>
+                        <div className="director-title">{formData.signatureTitle}</div>
+                        {(adminSignature || DEFAULT_SIGNATURE_URL) && (
+                          <img
+                            src={adminSignature || DEFAULT_SIGNATURE_URL}
+                            alt="Signature"
+                            style={{ maxHeight: '110px', marginTop: '8px' }}
+                          />
+                        )}
+                      </div>
+
+                      {/* Right: QR Code + Verification ID */}
+                      <div className="qr-block">
+                        {qrDataUrl && (
+                          <div className="certificate-qr">
+                            <img src={qrDataUrl} alt="Verification QR" />
+                            <div className="qr-label">Scan to verify</div>
+                          </div>
+                        )}
+                        <div className="verify-id">
+                          ID: {certificateId}
+                        </div>
+                      </div>
                     </div>
 
                     <div className="certificate-number">
-                      Certificate ID: {formData.certificateNumber}
+                      Certificate Serial: {formData.certificateNumber}
                     </div>
                   </div>
                 </div>

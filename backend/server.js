@@ -15,18 +15,20 @@ const imageRoutes = require('./routes/images');
 const registrationRoutes = require('./routes/registrations');
 const programRoutes = require('./routes/programs');
 const Donation = require('./models/Donation');
+const certificateRoutes = require('./routes/certificateRoutes');
 
 app.use(cors());
+const path = require('path');    
 
 app.use(express.json({ limit: '10mb' }));
 
 app.use('/api/registrations', registrationRoutes);
-
+app.use('/api/certificates', certificateRoutes);
 app.use('/api/images', imageRoutes);
 app.use("/api/volunteer", volunteerRoutes);
 app.use("/api/contact", contactRoutes);
 app.use('/api/programs', programRoutes);
-
+app.use(express.static('public'));
 
 
 
@@ -70,6 +72,10 @@ app.get('/api/donations', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+});
+
+app.get('/verify/:certId', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'verify.html'));
 });
 
 // POST new donation (including QR payment)
