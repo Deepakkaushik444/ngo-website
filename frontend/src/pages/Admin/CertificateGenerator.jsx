@@ -41,7 +41,7 @@ export default function CertificateGenerator() {
   // Generate QR code when certificateId changes
   useEffect(() => {
     // The QR code will point to your verification page (not the raw API)
-    const verificationUrl = `${window.location.origin}/verify/${certificateId}`;
+    const verificationUrl = `https://ngo-website-wzab.onrender.com/verify/${certificateId}`;
     QRCode.toDataURL(verificationUrl, { width: 100, margin: 1 }, (err, url) => {
       if (!err) setQrDataUrl(url);
       else console.error("QR generation error", err);
