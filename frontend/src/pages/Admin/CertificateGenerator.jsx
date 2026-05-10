@@ -3,12 +3,19 @@ import { useState, useRef } from "react";
 import html2canvas from "html2canvas";
 import './CertificateGenerator.css';
 
+// ================= DEFAULT IMAGE URLs =================
+// Replace these with your actual image URLs
+const DEFAULT_LOGO_URL = "/images/main.jpg";
+const DEFAULT_SIGNATURE_URL = "/images/stamp.png";
+const DEFAULT_STAMP_URL = "/images/st1.png";
+
 export default function CertificateGenerator() {
   const [formData, setFormData] = useState({
     ngoName: "Maa Indrawati Devi Nari Shakti Foundation",
     recipientName: "Dr. Priya Sharma",
     certificateType: "Humanitarian Service",
-description: "Honoring your exceptional commitment, inspiring service, and significant contribution toward social empowerment, humanitarian support, and community development.",
+    description: "Honoring your exceptional commitment, inspiring service, and significant contribution toward social empowerment, humanitarian support, and community development.",
+    issueDate: new Date().toISOString().split('T')[0], // today's date
     expiryDate: "",
     certificateNumber: "NGO-" + Date.now(),
     signatureName: "Indu",
@@ -17,8 +24,8 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
 
   const [template, setTemplate] = useState("classic");
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
-  const [orgLogo, setOrgLogo] = useState(null);
-  const [adminSignature, setAdminSignature] = useState(null);
+  const [orgLogo, setOrgLogo] = useState(null);        // null = use DEFAULT_LOGO_URL
+  const [adminSignature, setAdminSignature] = useState(null); // null = use DEFAULT_SIGNATURE_URL
   const certificateRef = useRef(null);
   const logoInputRef = useRef(null);
   const signatureInputRef = useRef(null);
@@ -96,7 +103,7 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
       setAdminSignature(null);
       if (signatureInputRef.current) signatureInputRef.current.value = '';
     }
-    showToast(`${type === 'logo' ? 'Logo' : 'Signature'} removed`, "info");
+    showToast(`${type === 'logo' ? 'Logo' : 'Signature'} removed (using default)`, "info");
   };
 
   const downloadCertificate = async () => {
@@ -109,7 +116,7 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
         scale: 3,
         backgroundColor: '#ffffff',
         logging: false,
-        useCORS: true,
+        useCORS: true,      // allows cross-origin images (default URLs)
         allowTaint: false
       });
       
@@ -158,7 +165,7 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
             <p>Fill in the information below to generate your humanitarian certificate</p>
 
             <div className="form-group">
-              <label>Organization Logo <span className="optional">(Optional)</span></label>
+              <label>Organization Logo <span className="optional">(Optional - uses default if none uploaded)</span></label>
               <div className="image-upload-wrapper">
                 <input
                   type="file"
@@ -173,7 +180,7 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
                   className="upload-btn"
                   onClick={() => document.getElementById('logo-upload').click()}
                 >
-                  📷 Upload Logo
+                  📷 Upload Custom Logo
                 </button>
                 {orgLogo && (
                   <button 
@@ -181,13 +188,18 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
                     className="remove-btn"
                     onClick={() => removeImage('logo')}
                   >
-                    ✖ Remove Logo
+                    ✖ Revert to Default Logo
                   </button>
                 )}
               </div>
               {orgLogo && (
                 <div className="image-preview">
-                  <img src={orgLogo} alt="Organization Logo Preview" />
+                  <img src={orgLogo} alt="Uploaded Logo Preview" />
+                </div>
+              )}
+              {!orgLogo && (
+                <div className="image-preview default-preview">
+                  <span>Using default logo: <strong>URL provided</strong></span>
                 </div>
               )}
             </div>
@@ -256,7 +268,7 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
             </div>
 
             <div className="form-group">
-              <label>Administrator Signature <span className="optional">(Upload Image)</span></label>
+              <label>Administrator Signature <span className="optional">(Upload or use default URL)</span></label>
               <div className="image-upload-wrapper">
                 <input
                   type="file"
@@ -271,7 +283,7 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
                   className="upload-btn"
                   onClick={() => document.getElementById('signature-upload').click()}
                 >
-                  ✍️ Upload Signature
+                  ✍️ Upload Custom Signature
                 </button>
                 {adminSignature && (
                   <button 
@@ -279,13 +291,18 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
                     className="remove-btn"
                     onClick={() => removeImage('signature')}
                   >
-                    ✖ Remove Signature
+                    ✖ Revert to Default Signature
                   </button>
                 )}
               </div>
               {adminSignature && (
                 <div className="image-preview">
-                  <img src={adminSignature} alt="Signature Preview" />
+                  <img src={adminSignature} alt="Uploaded Signature Preview" />
+                </div>
+              )}
+              {!adminSignature && (
+                <div className="image-preview default-preview">
+                  <span>Using default signature from URL</span>
                 </div>
               )}
             </div>
@@ -360,13 +377,13 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
                   {/* Organization Logo & Header */}
                   <div className="certificate-header-section">
                     <div className="certificate-logo">
-                      {orgLogo ? (
-                        <img src={orgLogo} alt="Organization Logo" className="org-logo-img" />
-                      ) : (
-                        <div className="default-logo" style={{ background: templates[template].accentColor }}>
-                          🌍
-                        </div>
-                      )}
+                      {/* Use uploaded logo if present, otherwise default URL */}
+                      <img 
+                        src={orgLogo || DEFAULT_LOGO_URL} 
+                        alt="Organization Logo" 
+                        className="org-logo-img"
+                        crossOrigin="anonymous"
+                      />
                     </div>
                     <div className="certificate-ngo-name" style={{ color: templates[template].borderColor }}>
                       {formData.ngoName}
@@ -416,11 +433,13 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
                     <div className="signature-area">
                       <div className="signature-block">
                         <div className="signature-container">
-                          {adminSignature ? (
-                            <img src={adminSignature} alt="Authorized Signature" className="signature-img" />
-                          ) : (
-                            <div className="signature-line"></div>
-                          )}
+                          {/* Use uploaded signature if present, otherwise default URL */}
+                          <img 
+                            src={adminSignature || DEFAULT_SIGNATURE_URL} 
+                            alt="Authorized Signature" 
+                            className="signature-img"
+                            crossOrigin="anonymous"
+                          />
                         </div>
                         <div className="signature-name">{formData.signatureName}</div>
                         <div className="signature-title">{formData.signatureTitle}</div>
@@ -434,14 +453,15 @@ description: "Honoring your exceptional commitment, inspiring service, and signi
                       </div>
                     </div>
 
-                   <div className="certificate-seal">
-  <img 
-    src="../images/st.png"   // 👈 DUMMY URL – replace with your stamp image URL later
-    alt="Organization Stamp"
-    className="seal-image"
-    style={{ width: '80px', height: '80px', objectFit: 'contain' }}
-  />
-</div>
+                    <div className="certificate-seal">
+                      <img 
+                        src={DEFAULT_STAMP_URL}
+                        alt="Organization Stamp"
+                        className="seal-image"
+                        style={{ width: '100px', height: '100px', objectFit: 'contain' }}
+                        crossOrigin="anonymous"
+                      />
+                    </div>
 
                     <div className="certificate-number">
                       Certificate ID: {formData.certificateNumber}

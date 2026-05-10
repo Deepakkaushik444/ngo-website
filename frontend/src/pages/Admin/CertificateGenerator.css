@@ -535,11 +535,11 @@
   }
 }
 .seal-image {
-  border-radius: 50%;
-  border: 2px solid #c0392b;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  background: white;
-  padding: 4px;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
 }
 
 /* Signature image – larger size */
