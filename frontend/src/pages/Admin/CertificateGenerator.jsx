@@ -5,14 +5,13 @@ import './CertificateGenerator.css';
 
 export default function CertificateGenerator() {
   const [formData, setFormData] = useState({
-    ngoName: "Global Humanitarian Alliance",
+    ngoName: "Maa Indrawati Devi Nari Shakti Foundation",
     recipientName: "Dr. Priya Sharma",
     certificateType: "Humanitarian Service",
-    description: "In recognition of exceptional dedication, selfless service, and transformative impact on community welfare initiatives.",
-    issueDate: new Date().toISOString().split('T')[0],
+description: "Honoring your exceptional commitment, inspiring service, and significant contribution toward social empowerment, humanitarian support, and community development.",
     expiryDate: "",
     certificateNumber: "NGO-" + Date.now(),
-    signatureName: "Michael Chen",
+    signatureName: "Indu",
     signatureTitle: "Executive Director"
   });
 

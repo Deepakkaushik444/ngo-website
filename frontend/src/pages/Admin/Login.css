@@ -75,20 +75,20 @@
   border-left: 3px solid #ef4444;
 }
 
-/* --- FIXED INPUT GROUP: Darker background for better text contrast --- */
+/* --- INPUT GROUP (fixed) --- */
 .input-group {
   position: relative;
   margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.45);       /* Dark background makes white text visible */
+  background: rgba(0, 0, 0, 0.45);
   border-radius: 1rem;
   transition: all 0.25s ease;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .input-group:focus-within {
-  background: rgba(0, 0, 0, 0.6);        /* Slightly darker on focus */
+  background: rgba(0, 0, 0, 0.6);
   border-color: #FFD700;
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
 }
@@ -99,6 +99,7 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+/* Single, correct input style – white text */
 .input-group input {
   flex: 1;
   border: none;
@@ -106,12 +107,12 @@
   padding: 0.9rem 0;
   font-size: 1rem;
   outline: none;
-  color: #ffffff;                      /* White text, now visible against dark background */
-  caret-color: #FFD700;               /* Golden caret for better typing feedback */
+  color: #050308;
+  caret-color: #FFD700;
 }
 
 .input-group input::placeholder {
-  color: rgba(255, 255, 255, 0.55);   /* Slightly brighter placeholder for visibility */
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .password-toggle {
@@ -127,12 +128,14 @@
   color: #FFD700;
 }
 
-/* --- Ensure autofill styles don't break visibility --- */
+/* Autofill override – force white text */
 .input-group input:-webkit-autofill,
-.input-group input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #ffffff;
-  -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.6) inset;
+.input-group input:-webkit-autofill:focus,
+.input-group input:-webkit-autofill:hover {
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.6) inset !important;
   transition: background-color 5000s ease-in-out 0s;
+  caret-color: #FFD700;
 }
 
 .login-button {
