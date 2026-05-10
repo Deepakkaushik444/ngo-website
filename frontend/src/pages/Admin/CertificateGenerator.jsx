@@ -5,47 +5,58 @@ import './CertificateGenerator.css';
 
 export default function CertificateGenerator() {
   const [formData, setFormData] = useState({
-    ngoName: "Helping Hands Foundation",
-    recipientName: "John Doe",
-    certificateType: "Volunteer",
-    description: "In recognition of their outstanding contribution and dedicated service to our cause.",
+    ngoName: "Global Humanitarian Alliance",
+    recipientName: "Dr. Priya Sharma",
+    certificateType: "Humanitarian Service",
+    description: "In recognition of exceptional dedication, selfless service, and transformative impact on community welfare initiatives.",
     issueDate: new Date().toISOString().split('T')[0],
     expiryDate: "",
     certificateNumber: "NGO-" + Date.now(),
-    signatureName: "Sarah Johnson",
+    signatureName: "Michael Chen",
     signatureTitle: "Executive Director"
   });
 
   const [template, setTemplate] = useState("classic");
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [orgLogo, setOrgLogo] = useState(null);
+  const [adminSignature, setAdminSignature] = useState(null);
   const certificateRef = useRef(null);
+  const logoInputRef = useRef(null);
+  const signatureInputRef = useRef(null);
 
   const certificateTypes = [
-    "Volunteer",
+    "Humanitarian Service",
+    "Volunteer Excellence",
     "Donor Recognition",
-    "Community Service",
-    "Achievement",
-    "Participation",
-    "Leadership",
-    "Excellence",
-    "Partnership"
+    "Community Leadership",
+    "Social Impact",
+    "Education Support",
+    "Healthcare Initiative",
+    "Environmental Stewardship",
+    "Women Empowerment",
+    "Child Welfare",
+    "Disaster Relief",
+    "Partnership Award"
   ];
 
   const templates = {
     classic: {
       name: "Classic",
-      borderColor: "#f39c12",
-      titleColor: "#2c3e50"
+      borderColor: "#c0392b",
+      titleColor: "#2c3e50",
+      accentColor: "#e67e22"
     },
     modern: {
       name: "Modern",
-      borderColor: "#3498db",
-      titleColor: "#2980b9"
+      borderColor: "#2980b9",
+      titleColor: "#1a5276",
+      accentColor: "#3498db"
     },
     elegant: {
       name: "Elegant",
-      borderColor: "#9b59b6",
-      titleColor: "#8e44ad"
+      borderColor: "#7d3c98",
+      titleColor: "#6c3483",
+      accentColor: "#9b59b6"
     }
   };
 
@@ -60,6 +71,35 @@ export default function CertificateGenerator() {
     showToast("New certificate number generated!", "success");
   };
 
+  const handleImageUpload = (e, type) => {
+    const file = e.target.files[0];
+    if (file && (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (type === 'logo') {
+          setOrgLogo(reader.result);
+        } else if (type === 'signature') {
+          setAdminSignature(reader.result);
+        }
+        showToast(`${type === 'logo' ? 'Logo' : 'Signature'} uploaded successfully!`, "success");
+      };
+      reader.readAsDataURL(file);
+    } else {
+      showToast("Please upload a valid PNG or JPG image", "error");
+    }
+  };
+
+  const removeImage = (type) => {
+    if (type === 'logo') {
+      setOrgLogo(null);
+      if (logoInputRef.current) logoInputRef.current.value = '';
+    } else if (type === 'signature') {
+      setAdminSignature(null);
+      if (signatureInputRef.current) signatureInputRef.current.value = '';
+    }
+    showToast(`${type === 'logo' ? 'Logo' : 'Signature'} removed`, "info");
+  };
+
   const downloadCertificate = async () => {
     if (!certificateRef.current) return;
     
@@ -70,12 +110,13 @@ export default function CertificateGenerator() {
         scale: 3,
         backgroundColor: '#ffffff',
         logging: false,
-        useCORS: true
+        useCORS: true,
+        allowTaint: false
       });
       
       const image = canvas.toDataURL("image/png");
       const link = document.createElement('a');
-      const fileName = `${formData.recipientName.replace(/\s/g, '_')}_Certificate.png`;
+      const fileName = `${formData.recipientName.replace(/\s/g, '_')}_${formData.certificateType.replace(/\s/g, '_')}_Certificate.png`;
       link.download = fileName;
       link.href = image;
       link.click();
@@ -107,18 +148,53 @@ export default function CertificateGenerator() {
     <div className="certificate-container">
       <div className="certificate-wrapper">
         <div className="certificate-header">
-          <h1>🎓 Auto-Certificate Generator</h1>
-          <p>Create and download professional certificates for your NGO</p>
+          <h1>🌍 NGO Certificate Generator</h1>
+          <p>Create impact-driven certificates with official signatures & branding</p>
         </div>
 
         <div className="certificate-content">
           {/* Form Panel */}
           <div className="form-panel">
             <h2>Certificate Details</h2>
-            <p>Fill in the information below to generate your certificate</p>
+            <p>Fill in the information below to generate your humanitarian certificate</p>
 
             <div className="form-group">
-              <label>NGO Name <span className="required">*</span></label>
+              <label>Organization Logo <span className="optional">(Optional)</span></label>
+              <div className="image-upload-wrapper">
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/jpg"
+                  onChange={(e) => handleImageUpload(e, 'logo')}
+                  ref={logoInputRef}
+                  style={{ display: 'none' }}
+                  id="logo-upload"
+                />
+                <button 
+                  type="button" 
+                  className="upload-btn"
+                  onClick={() => document.getElementById('logo-upload').click()}
+                >
+                  📷 Upload Logo
+                </button>
+                {orgLogo && (
+                  <button 
+                    type="button" 
+                    className="remove-btn"
+                    onClick={() => removeImage('logo')}
+                  >
+                    ✖ Remove Logo
+                  </button>
+                )}
+              </div>
+              {orgLogo && (
+                <div className="image-preview">
+                  <img src={orgLogo} alt="Organization Logo Preview" />
+                </div>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label>NGO / Organization Name <span className="required">*</span></label>
               <input
                 type="text"
                 name="ngoName"
@@ -129,7 +205,7 @@ export default function CertificateGenerator() {
             </div>
 
             <div className="form-group">
-              <label>Recipient Name <span className="required">*</span></label>
+              <label>Recipient Full Name <span className="required">*</span></label>
               <input
                 type="text"
                 name="recipientName"
@@ -140,7 +216,7 @@ export default function CertificateGenerator() {
             </div>
 
             <div className="form-group">
-              <label>Certificate Type <span className="required">*</span></label>
+              <label>Award / Certificate Type <span className="required">*</span></label>
               <select name="certificateType" value={formData.certificateType} onChange={handleChange}>
                 {certificateTypes.map(type => (
                   <option key={type} value={type}>{type}</option>
@@ -149,13 +225,13 @@ export default function CertificateGenerator() {
             </div>
 
             <div className="form-group">
-              <label>Description / Message</label>
+              <label>Recognition Message</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
                 rows="3"
-                placeholder="Enter a special message for the recipient..."
+                placeholder="Write a heartfelt message of appreciation..."
               />
             </div>
 
@@ -180,57 +256,81 @@ export default function CertificateGenerator() {
               </div>
             </div>
 
+            <div className="form-group">
+              <label>Administrator Signature <span className="optional">(Upload Image)</span></label>
+              <div className="image-upload-wrapper">
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/jpg"
+                  onChange={(e) => handleImageUpload(e, 'signature')}
+                  ref={signatureInputRef}
+                  style={{ display: 'none' }}
+                  id="signature-upload"
+                />
+                <button 
+                  type="button" 
+                  className="upload-btn"
+                  onClick={() => document.getElementById('signature-upload').click()}
+                >
+                  ✍️ Upload Signature
+                </button>
+                {adminSignature && (
+                  <button 
+                    type="button" 
+                    className="remove-btn"
+                    onClick={() => removeImage('signature')}
+                  >
+                    ✖ Remove Signature
+                  </button>
+                )}
+              </div>
+              {adminSignature && (
+                <div className="image-preview">
+                  <img src={adminSignature} alt="Signature Preview" />
+                </div>
+              )}
+            </div>
+
             <div className="form-row">
               <div className="form-group">
-                <label>Signature Name</label>
+                <label>Authorized Signatory Name</label>
                 <input
                   type="text"
                   name="signatureName"
                   value={formData.signatureName}
                   onChange={handleChange}
-                  placeholder="Authorized signatory name"
+                  placeholder="Name of signing authority"
                 />
               </div>
               <div className="form-group">
-                <label>Signature Title</label>
+                <label>Signatory Title</label>
                 <input
                   type="text"
                   name="signatureTitle"
                   value={formData.signatureTitle}
                   onChange={handleChange}
-                  placeholder="Position title"
+                  placeholder="Position / Title"
                 />
               </div>
             </div>
 
             <div className="form-group">
-              <label>Certificate Number</label>
-              <div style={{ display: "flex", gap: "10px" }}>
+              <label>Certificate Serial Number</label>
+              <div className="cert-number-group">
                 <input
                   type="text"
                   name="certificateNumber"
                   value={formData.certificateNumber}
                   onChange={handleChange}
-                  style={{ flex: 1 }}
                 />
-                <button
-                  onClick={generateCertificateNumber}
-                  style={{
-                    padding: "0 15px",
-                    background: "#3498db",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "10px",
-                    cursor: "pointer"
-                  }}
-                >
-                  Generate
+                <button onClick={generateCertificateNumber} className="generate-number-btn">
+                  Generate New
                 </button>
               </div>
             </div>
 
             <div className="template-selector">
-              <h3>Select Template Style</h3>
+              <h3>Certificate Design Template</h3>
               <div className="template-buttons">
                 {Object.entries(templates).map(([key, tmpl]) => (
                   <button
@@ -248,20 +348,34 @@ export default function CertificateGenerator() {
           {/* Preview Panel */}
           <div className="preview-panel">
             <div className="preview-header">
-              <h2>📄 Certificate Preview</h2>
+              <h2>📜 Certificate Preview</h2>
               <button className="download-btn" onClick={downloadCertificate}>
-                ⬇️ Download Certificate
+                ⬇️ Download Certificate (PNG)
               </button>
             </div>
 
             {/* Certificate Card */}
             <div ref={certificateRef}>
-              <div className="certificate-card">
+              <div className="certificate-card" style={{ borderColor: templates[template].borderColor }}>
                 <div className="certificate-border">
-                  {/* Logo/Icon */}
-                  <div className="certificate-logo">
-                    🏆
+                  {/* Organization Logo & Header */}
+                  <div className="certificate-header-section">
+                    <div className="certificate-logo">
+                      {orgLogo ? (
+                        <img src={orgLogo} alt="Organization Logo" className="org-logo-img" />
+                      ) : (
+                        <div className="default-logo" style={{ background: templates[template].accentColor }}>
+                          🌍
+                        </div>
+                      )}
+                    </div>
+                    <div className="certificate-ngo-name" style={{ color: templates[template].borderColor }}>
+                      {formData.ngoName}
+                    </div>
                   </div>
+
+                  {/* Decorative Line */}
+                  <div className="certificate-divider" style={{ background: `linear-gradient(90deg, transparent, ${templates[template].borderColor}, transparent)` }}></div>
 
                   {/* Title */}
                   <div className="certificate-title">
@@ -269,7 +383,7 @@ export default function CertificateGenerator() {
                       Certificate of {formData.certificateType}
                     </h2>
                     <div className="certificate-subtitle">
-                      {formData.ngoName.toUpperCase()}
+                      In Recognition & Appreciation
                     </div>
                   </div>
 
@@ -284,43 +398,51 @@ export default function CertificateGenerator() {
                     </p>
                   </div>
 
-                  {/* Details */}
+                  {/* Details Grid */}
                   <div className="certificate-details">
                     <div className="detail-item">
-                      <div className="detail-label">Issue Date</div>
+                      <div className="detail-label">Date of Issue</div>
                       <div className="detail-value">{formatDate(formData.issueDate)}</div>
                     </div>
                     {formData.expiryDate && (
                       <div className="detail-item">
-                        <div className="detail-label">Valid Until</div>
+                        <div className="detail-label">Valid Through</div>
                         <div className="detail-value">{formatDate(formData.expiryDate)}</div>
                       </div>
                     )}
                   </div>
 
-                  {/* Footer */}
+                  {/* Footer with Signature & Seal */}
                   <div className="certificate-footer">
                     <div className="signature-area">
-                      <div className="signature">
-                        <div className="signature-line"></div>
+                      <div className="signature-block">
+                        <div className="signature-container">
+                          {adminSignature ? (
+                            <img src={adminSignature} alt="Authorized Signature" className="signature-img" />
+                          ) : (
+                            <div className="signature-line"></div>
+                          )}
+                        </div>
                         <div className="signature-name">{formData.signatureName}</div>
                         <div className="signature-title">{formData.signatureTitle}</div>
                       </div>
-                      <div className="signature">
-                        <div className="signature-line"></div>
+                      <div className="signature-block">
+                        <div className="signature-container">
+                          <div className="signature-line"></div>
+                        </div>
                         <div className="signature-name">Organization Seal</div>
                         <div className="signature-title">{formData.ngoName}</div>
                       </div>
                     </div>
 
                     <div className="certificate-seal">
-                      <div className="seal">
+                      <div className="seal" style={{ borderColor: templates[template].borderColor, color: templates[template].borderColor }}>
                         {formData.ngoName.charAt(0)}
                       </div>
                     </div>
 
                     <div className="certificate-number">
-                      Certificate No: {formData.certificateNumber}
+                      Certificate ID: {formData.certificateNumber}
                     </div>
                   </div>
                 </div>
