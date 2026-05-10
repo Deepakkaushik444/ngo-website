@@ -18,7 +18,7 @@ const galleryImages = [
   { original: "/images/logo.jpeg", title: "Activities" },
   { original: "/images/game.png", title: "Game" },
   { original: "/images/yoga.png", title: "Yoga Program" },
-  { original: "/images/logo.jpeg", title: "Activities" },
+  
   { original: "/images/logo1 (1).jpeg", title: "Activities" },
   { original: "/images/logo1 (2).jpeg", title: "Activities" },
   { original: "/images/logo1 (3).jpeg", title: "Activities" },
@@ -36,10 +36,10 @@ const galleryImages = [
   { original: "/images/logo2 (8).jpeg", title: "Activities" },
   { original: "/images/logo2 (9).jpeg", title: "Activities" },
   { original: "/images/logo2 (10).jpeg", title: "Activities" },
-  { original: "/images/logo6.jpeg", title: "Activities" },
-  { original: "/images/logo5.jpeg", title: "Activities" },
-  { original: "/images/logo3.jpeg", title: "Activities" },
-  { original: "/images/logo4.jpeg", title: "Activities" },
+  { original: "/images/logo6.jpg", title: "Activities" },
+  { original: "/images/logo5.jpg", title: "Activities" },
+  { original: "/images/logo3.jpg", title: "Activities" },
+  { original: "/images/logo4.jpg", title: "Activities" },
 
   { original: "/images/price.png", title: "Price Distribution" },
   { original: "/images/playschool.jpeg", title: "School Support" },
