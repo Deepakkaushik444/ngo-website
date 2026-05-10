@@ -12,8 +12,7 @@ const DEFAULT_SIGNATURE_URL = "/images/stamp.png";
 const DEFAULT_STAMP_URL = "/images/st1.png";
 
 // Backend API URL – change to your production URL when deploying
-const API_URL = "https://your-backend.onrender.com/api/certificates";
-
+const API_URL = "https://ngo-website-wzab.onrender.com/api/certificates";
 export default function CertificateGenerator() {
   const [formData, setFormData] = useState({
     ngoName: "Maa Indrawati Devi Nari Shakti Foundation",
