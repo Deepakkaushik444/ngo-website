@@ -21,7 +21,7 @@ export default function Login() {
 
     // Simulate API call – replace with real backend later
     setTimeout(() => {
-      if (data.email === "kaushikmunu188@gmail.com" && data.password === "1710@2025") {
+      if (data.email === "kaushikmunu188@gmail.com"|| "deepakkaushik@gmail.com" && data.password === "1710@2025") {
         localStorage.setItem("adminToken", "dummy-token");
         localStorage.setItem("admin", "true");
         localStorage.setItem("adminEmail", data.email);
