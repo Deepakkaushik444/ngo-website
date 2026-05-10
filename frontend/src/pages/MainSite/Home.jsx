@@ -42,7 +42,7 @@ const galleryImages = [
 ];
 
 const testimonials = [
-  { name: "Shri Karmbir Sharma (Principal)", text: "संस्था द्वारा बच्चों की शिक्षा में अद्भुत कार्य किया जा रहा है।", role: "Principal, Aadarsh Sec. Sr. School" },
+  { name: "Shri Karmvir Shastri (Principal)", text: "संस्था द्वारा बच्चों की शिक्षा में अद्भुत कार्य किया जा रहा है।", role: "Principal, Aadarsh Sr. Sec. School" },
   { name: "Smt. Sita Devi (Sarpanch)", text: "महिला सशक्तिकरण के क्षेत्र में यह संस्था मील का पत्थर है।", role: "Sarpanch, Mandhana" },
 ];
 
@@ -316,7 +316,7 @@ export default function Home() {
           <div className="footer-grid">
             <div className="footer-about">
               <h3>Ma Indrawti Devi Nari Shakti Foundation</h3>
-              <p>Empowering rural communities through education, health, and women's upliftment since 2015.</p>
+              <p>Empowering rural communities through education, health, and women's upliftment since 2025.</p>
               <div className="footer-social">
                 <a href="https://www.facebook.com/share/1AfvkyJaAQ/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebook /></a>
                 <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><FaTwitter /></a>
