@@ -153,7 +153,7 @@ export default function Home() {
       <ParallaxBanner
         layers={[
           {
-            image: "/images/food_1.png",
+            image: "/images/logo.jpeg",
             speed: -20,
             children: (
               <video autoPlay loop muted playsInline className="hero-video">
